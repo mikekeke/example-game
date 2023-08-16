@@ -125,9 +125,14 @@ async function getWorldStats(walletAddress: string): Promise<PackedUserStats | F
   }
 }
 
+async function testQuery(): Promise<string> {
+  return "test query result"
+}
+
 export const queryEndpoints = {
   getUserStats,
   getWorldStats,
   getRoundExecutor,
   getMatchExecutor,
+  testQuery,
 };
