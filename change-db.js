@@ -43,7 +43,7 @@ const updateEnvFile = async file => {
 // Update docker compose volume with unique new name.
 const updateDockerFile = async file => {
   const data = await fs.promises.readFile(__dirname + '/' + file, 'utf8');
-  const ndata = data.replace(/open-world-.+?-db/g, 'open-world-' + new Date().getTime() + '-db');
+  const ndata = data.replace(/example-game-.+?-db/g, 'example-game-' + new Date().getTime() + '-db');
   await fs.promises.writeFile(file, ndata, 'utf8');
 };
 
