@@ -4,6 +4,7 @@ import {
   PaimaMiddlewareErrorCode,
   postConciselyEncodedData,
   getActiveAddress,
+  postConciseData,
 } from 'paima-sdk/paima-mw-core';
 
 import { buildEndpointErrorFxn } from '../errors';
@@ -88,8 +89,29 @@ async function joinWorld(): Promise<OldResult> {
   }
 }
 
+async function submitGuess(userAddress: string, symbols: string, guess: string) {
+  //todo: validate input
+  const address =
+    userAddress.startsWith("0x")
+      ? userAddress.slice(2, userAddress.length)
+      : userAddress;
+  console.log("before", userAddress, "after", address);
+  const conciseBuilder = builder.initialize();
+  conciseBuilder.setPrefix('s');
+  // Address of user wallet will have sequence state identifier,
+  // so all user submissions will be processed via FIFO queue
+  conciseBuilder.addValue({ value: String(address), isStateIdentifier: true });
+  conciseBuilder.addValue({ value: String(symbols) });
+  conciseBuilder.addValue({ value: String(guess) });
+
+  const errorFxn = buildEndpointErrorFxn('submitGuess');
+  const result = postConciseData(conciseBuilder.build(), errorFxn);
+  return result;
+}
+
 export const writeEndpoints = {
-  joinWorld,
-  submitMoves,
-  submitIncrement,
+  submitGuess,
+  // joinWorld,
+  // submitMoves,
+  // submitIncrement,
 };

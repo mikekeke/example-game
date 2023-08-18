@@ -12,6 +12,8 @@ export const enum MiddlewareErrorCode {
   // Query endpoint related:
   CALCULATED_ROUND_END_IN_PAST,
   UNABLE_TO_BUILD_EXECUTOR,
+  // Morze Code game
+  GUESS_CONTAINS_WRONG_DATA,
 }
 
 type ErrorMessageMapping = Record<MiddlewareErrorCode, string>;
@@ -20,6 +22,9 @@ const MIDDLEWARE_ERROR_MESSAGES: ErrorMessageMapping = {
   [MiddlewareErrorCode.CALCULATED_ROUND_END_IN_PAST]: 'Calculated round end is in the past',
   [MiddlewareErrorCode.UNABLE_TO_BUILD_EXECUTOR]:
     'Unable to build executor from data returned from server -- executor might not exist',
+  // Morze Code game
+  [MiddlewareErrorCode.GUESS_CONTAINS_WRONG_DATA]:
+    `Your guess contains symbol that does not relate to encoding`
 };
 
 const errorMessageFxn: ErrorMessageFxn = buildErrorCodeTranslator({
