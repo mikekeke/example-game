@@ -4,6 +4,9 @@ import parse from './parser.js';
 import type Prando from 'paima-sdk/paima-prando';
 import type { SubmittedChainData } from 'paima-sdk/paima-utils';
 import type { SQLUpdate } from 'paima-sdk/paima-db';
+// import { submitGuess } from './persist/global.js';
+import { insertSubmission, IInsertSubmissionParams } from '@game/db';
+import { SubmitGuess } from './types.js';
 // import { submitIncrement, submitMove, joinWorld } from './persist/global.js';
 
 export default async function (
@@ -17,17 +20,22 @@ export default async function (
   const input = parse(inputData.inputData);
   console.log(`Processing input string: ${inputData.inputData}`);
   console.log(`Input string parsed as: ${input.input}`);
-  return [];
+  // return [];
   // throw new Error("State transition end")
 
   switch (input.input) {
     case 'submitGuess':
-  //     return joinWorld(user, blockHeight, input, randomnessGenerator);
-  //   case 'submitMove':
-  //     return submitMove(user, blockHeight, input, randomnessGenerator);
-  //   case 'submitIncrement':
-  //     return submitIncrement(user, blockHeight, input, randomnessGenerator);
-  //   default:
-  //     return [];
+      const res =  processSubmission(input, dbConn);
+      return [res];
+      default:
+        console.warn("Unexpected input", input);
+        return [];
   }
+}
+
+function processSubmission(input: SubmitGuess, dbConn: Pool): SQLUpdate {
+
+
+  const params: IInsertSubmissionParams = { user_address: input.address, symbols: input.symbols, guess: input.guess }
+  return [insertSubmission, params]
 }

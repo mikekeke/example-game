@@ -1,19 +1,19 @@
 import type { SQLUpdate } from 'paima-sdk/paima-db';
 import type Prando from 'paima-sdk/paima-prando';
 import type { WalletAddress } from 'paima-sdk/paima-utils';
-import type {
-  ICreateGlobalUserStateParams,
-  IUpdateUserGlobalPositionParams,
-  IUpdateWorldStateCounterParams,
-} from '@game/db';
-import { createGlobalUserState } from '@game/db';
-import { updateUserGlobalPosition } from '@game/db';
-import { updateWorldStateCounter } from '@game/db';
+// import type {
+//   ICreateGlobalUserStateParams,
+//   IUpdateUserGlobalPositionParams,
+//   IUpdateWorldStateCounterParams,
+// } from '@game/db';
+// import { createGlobalUserState } from '@game/db';
+// import { updateUserGlobalPosition } from '@game/db';
+// import { updateWorldStateCounter } from '@game/db';
 // import type { JoinWorldInput, SubmitIncrementInput, SubmitMoveInput } from '../types';
 
-export function submitGuess() {
-    
-}
+// export function submitGuess(): SQLUpdate[] {
+
+// }
 
 // export function joinWorld(
 //   player: WalletAddress,

@@ -1,29 +1,12 @@
 /* 
-  @name create_global_world_state
+  @name insert_submission
 */
-INSERT INTO global_world_state (
-  x,
-  y,
-  can_visit
+INSERT INTO submissions (
+  user_address,
+  symbols,
+  guess
 ) VALUES (
- :x!,
- :y!,
- :can_visit!
-) 
-ON CONFLICT(x, y)
-DO NOTHING;
-
-/* 
-  @name create_global_user_state
-*/
-INSERT INTO global_user_state (
-  wallet, 
-  x,
-  y
-) VALUES (
-  :wallet!,
-  :x!,
-  :y!
-)
-ON CONFLICT (wallet)
-DO NOTHING;
+  :user_address!,
+  :symbols!,
+  :guess!
+);
