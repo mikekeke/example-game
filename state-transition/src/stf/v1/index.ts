@@ -7,6 +7,7 @@ import type { SQLUpdate } from 'paima-sdk/paima-db';
 // import { submitGuess } from './persist/global.js';
 import { insertSubmission, IInsertSubmissionParams } from '@game/db';
 import { SubmitGuess } from './types.js';
+import { MatchMove, initRoundExecutor } from '@game/game-logic';
 // import { submitIncrement, submitMove, joinWorld } from './persist/global.js';
 
 export default async function (
@@ -25,17 +26,28 @@ export default async function (
 
   switch (input.input) {
     case 'submitGuess':
-      const res =  processSubmission(input, dbConn);
+      const res = processSubmission(input, dbConn, randomnessGenerator);
       return [res];
-      default:
-        console.warn("Unexpected input", input);
-        return [];
+    default:
+      console.warn("Unexpected input", input);
+      return [];
   }
 }
 
-function processSubmission(input: SubmitGuess, dbConn: Pool): SQLUpdate {
+function processSubmission(input: SubmitGuess, dbConn: Pool, randomnessGenerator: Prando): SQLUpdate {
+  const move: MatchMove = MatchMove.fromData(input.symbols, input.guess);
 
+  console.log("Match move", JSON.stringify(move));
 
-  const params: IInsertSubmissionParams = { user_address: input.address, symbols: input.symbols, guess: input.guess }
+  const executor = initRoundExecutor(move, randomnessGenerator);
+  const finalState = executor.endState();
+  console.log("Final state", JSON.stringify(finalState));
+  const params: IInsertSubmissionParams =
+  {
+    user_address: input.address,
+    symbols: input.symbols,
+    guess: input.guess,
+    is_success: finalState.isGoodSoFar
+  }
   return [insertSubmission, params]
 }

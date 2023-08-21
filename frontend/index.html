@@ -9,7 +9,12 @@
 <body>
     <div>
         <p>Test2 </p>
-        <div id="test-button"></div>
+        <div id="buttons"></div>
+    </div>
+    <div>
+        <p>Results:</p>
+        <div id="results"></div>
+        
     </div>
 </body>
 <script src="./paimaMiddleware.js"></script>
@@ -33,20 +38,63 @@
         //     console.log(user.stats)
         // }
 
-        const loginDiv = document.getElementById("test-button");
-        let login = document.createElement("click-button");
+        const buttonsDiv = document.getElementById("buttons");
+        const resultsDiv = document.getElementById("results");
+
+        // submit button
+        let submit = document.createElement("submit-button");
         // login.style = 'width:50px; margin: 4px;'
-        login.innerHTML = "Test click";
-        login.onclick = () => {
+        submit.innerHTML = "Submit";
+        submit.onclick = () => {
             endpoints.submitGuess(
                 wallet.result.walletAddress,
-                "A",
-                "01"
+                "DAB",
+                "100+01+010"
             ).then(r => console.log("SubmitGuess", r));
         }
-        loginDiv.appendChild(login);
+        buttonsDiv.appendChild(submit);
+
+        // query test
+        let query = document.createElement("query-button");
+        // login.style = 'width:50px; margin: 4px;'
+        query.innerHTML = "Query";
+        query.onclick = () => {
+            endpoints.getUserSubmission(
+                wallet.result.walletAddress
+            ).then(r => console.log("Query submission", r));
+        }
+        buttonsDiv.appendChild(query);
+
+        // run check 
+        let check = document.createElement("query-button");
+        // login.style = 'width:50px; margin: 4px;'
+        check.innerHTML = "Check";
+        check.onclick = () => {
+            endpoints.getRoundExecutor(
+                wallet.result.walletAddress
+            ).then(res => processExecutor(res.result, resultsDiv)
+            );
+        }
+        buttonsDiv.appendChild(check);
     }
     start().then(r => r);
+
+    async function processExecutor(re, resultsDiv) {
+        console.log("RE", re)
+        // console.log("ES", re.endState())
+        let eject = 0;
+        let ticks = [];
+        for (ticks = re.tick(); ticks != null; ticks = re.tick()) {
+            let tick = ticks[0];
+            console.log(tick);
+            var p = document.createElement("p");
+            p.innerHTML = tick.symbol + " as " + tick.code + " => " + (tick.isCorrect ? "Correct!" : "Wrong!");
+            resultsDiv.appendChild(p);
+            await new Promise(r => setTimeout(r, 1000));
+            eject += 1;
+            if (eject > 10) return;
+        }
+    }
 
 </script>
 

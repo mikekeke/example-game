@@ -16,3 +16,11 @@ nvm use 16.20.0
 export PRIVATE_KEY=dc18907660410084b16f4a960f283491859bf48995f5c1bd7201383bb723ee56
 npx truffle migrate --network ganache
 ```
+
+```
+npm run compile:db
+```
+
+```
+npm run compile:api
+```

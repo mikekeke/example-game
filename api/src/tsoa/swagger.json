@@ -5,7 +5,62 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"IGetSubmissionResult": {
+				"description": "'GetSubmission' return type",
+				"properties": {
+					"guess": {
+						"type": "string"
+					},
+					"is_success": {
+						"type": "boolean"
+					},
+					"symbols": {
+						"type": "string"
+					},
+					"user_address": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"guess",
+					"is_success",
+					"symbols",
+					"user_address"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RoundExecutorData": {
+				"$ref": "#/components/schemas/IGetSubmissionResult"
+			},
+			"Error": {
+				"properties": {
+					"error": {
+						"type": "string",
+						"enum": [
+							"User submission not found"
+						],
+						"nullable": false
+					}
+				},
+				"required": [
+					"error"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Response": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/RoundExecutorData"
+					},
+					{
+						"$ref": "#/components/schemas/Error"
+					}
+				]
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -18,7 +73,83 @@
 		"contact": {}
 	},
 	"openapi": "3.0.0",
-	"paths": {},
+	"paths": {
+		"/round_executor": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Response"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "userAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/my_test": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user_submission": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Response"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "wallet_address",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
 	"servers": [
 		{
 			"url": "/"
