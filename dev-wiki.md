@@ -24,3 +24,18 @@ npm run compile:db
 ```
 npm run compile:api
 ```
+
+## Adding new stuff
+`query in db dir -> controller in api dir -> endpoint in middleware`
+
+then
+
+```
+cd db && npm run build && cd .. && npm run compile:api && npm run compile:db
+```
+
+
+
+```
+npm run pack && npm run pack:middleware
+```

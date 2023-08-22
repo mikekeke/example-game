@@ -44,7 +44,7 @@ function processSubmission(input: SubmitGuess, dbConn: Pool, randomnessGenerator
   console.log("Final state", JSON.stringify(finalState));
   const params: IInsertSubmissionParams =
   {
-    user_address: input.address,
+    wallet_address: input.address,
     symbols: input.symbols,
     guess: input.guess,
     is_success: finalState.isGoodSoFar

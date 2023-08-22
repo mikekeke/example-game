@@ -6,40 +6,26 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IGetSubmissionResult": {
-				"description": "'GetSubmission' return type",
+			"IGetSubmissionIdsResult": {
+				"description": "'GetSubmissionIds' return type",
 				"properties": {
-					"guess": {
-						"type": "string"
-					},
-					"is_success": {
-						"type": "boolean"
-					},
-					"symbols": {
-						"type": "string"
-					},
-					"user_address": {
-						"type": "string"
+					"submission_id": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"guess",
-					"is_success",
-					"symbols",
-					"user_address"
+					"submission_id"
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"RoundExecutorData": {
-				"$ref": "#/components/schemas/IGetSubmissionResult"
 			},
 			"Error": {
 				"properties": {
 					"error": {
 						"type": "string",
 						"enum": [
-							"User submission not found"
+							"Submissions not found"
 						],
 						"nullable": false
 					}
@@ -53,7 +39,10 @@
 			"Response": {
 				"anyOf": [
 					{
-						"$ref": "#/components/schemas/RoundExecutorData"
+						"items": {
+							"$ref": "#/components/schemas/IGetSubmissionIdsResult"
+						},
+						"type": "array"
 					},
 					{
 						"$ref": "#/components/schemas/Error"
@@ -74,7 +63,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/round_executor": {
+		"/submission_ids": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -93,7 +82,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "userAddress",
+						"name": "wallet_address",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -144,6 +133,15 @@
 						"required": true,
 						"schema": {
 							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "submission_id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
 						}
 					}
 				]

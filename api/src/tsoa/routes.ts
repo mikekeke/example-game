@@ -3,44 +3,36 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { RoundExecutorController } from './../controllers/roundExecutor';
+import { SubmissionIdsController } from './../controllers/submissionIds';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MyTestController } from './../controllers/testRoute';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { USerSubmissionController } from './../controllers/userSubmission';
+import { UserSubmissionController } from './../controllers/userSubmission';
 import type { RequestHandler } from 'express';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IGetSubmissionResult": {
+    "IGetSubmissionIdsResult": {
         "dataType": "refObject",
         "properties": {
-            "guess": {"dataType":"string","required":true},
-            "is_success": {"dataType":"boolean","required":true},
-            "symbols": {"dataType":"string","required":true},
-            "user_address": {"dataType":"string","required":true},
+            "submission_id": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "RoundExecutorData": {
-        "dataType": "refAlias",
-        "type": {"ref":"IGetSubmissionResult","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Error": {
         "dataType": "refObject",
         "properties": {
-            "error": {"dataType":"enum","enums":["User submission not found"],"required":true},
+            "error": {"dataType":"enum","enums":["Submissions not found"],"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Response": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"ref":"RoundExecutorData"},{"ref":"Error"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"IGetSubmissionIdsResult"}},{"ref":"Error"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -53,13 +45,13 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/round_executor',
-            ...(fetchMiddlewares<RequestHandler>(RoundExecutorController)),
-            ...(fetchMiddlewares<RequestHandler>(RoundExecutorController.prototype.get)),
+        app.get('/submission_ids',
+            ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController)),
+            ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController.prototype.get)),
 
-            function RoundExecutorController_get(request: any, response: any, next: any) {
+            function SubmissionIdsController_get(request: any, response: any, next: any) {
             const args = {
-                    userAddress: {"in":"query","name":"userAddress","required":true,"dataType":"string"},
+                    wallet_address: {"in":"query","name":"wallet_address","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -68,7 +60,7 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new RoundExecutorController();
+                const controller = new SubmissionIdsController();
 
 
               const promise = controller.get.apply(controller, validatedArgs as any);
@@ -103,12 +95,13 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/user_submission',
-            ...(fetchMiddlewares<RequestHandler>(USerSubmissionController)),
-            ...(fetchMiddlewares<RequestHandler>(USerSubmissionController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(UserSubmissionController)),
+            ...(fetchMiddlewares<RequestHandler>(UserSubmissionController.prototype.get)),
 
-            function USerSubmissionController_get(request: any, response: any, next: any) {
+            function UserSubmissionController_get(request: any, response: any, next: any) {
             const args = {
                     wallet_address: {"in":"query","name":"wallet_address","required":true,"dataType":"string"},
+                    submission_id: {"in":"query","name":"submission_id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -117,7 +110,7 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new USerSubmissionController();
+                const controller = new UserSubmissionController();
 
 
               const promise = controller.get.apply(controller, validatedArgs as any);

@@ -59,7 +59,7 @@
         // login.style = 'width:50px; margin: 4px;'
         query.innerHTML = "Query";
         query.onclick = () => {
-            endpoints.getUserSubmission(
+            endpoints.getSubmissionIds(
                 wallet.result.walletAddress
             ).then(r => console.log("Query submission", r));
         }
@@ -71,7 +71,8 @@
         check.innerHTML = "Check";
         check.onclick = () => {
             endpoints.getRoundExecutor(
-                wallet.result.walletAddress
+                wallet.result.walletAddress,
+                24
             ).then(res => processExecutor(res.result, resultsDiv)
             );
         }

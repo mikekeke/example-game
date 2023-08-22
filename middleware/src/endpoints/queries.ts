@@ -1,49 +1,38 @@
 import type { FailedResult, Result } from 'paima-sdk/paima-mw-core';
 import { buildBackendQuery, PaimaMiddlewareErrorCode } from 'paima-sdk/paima-mw-core';
 
-import type { RoundExecutorData, } from '@game/utils';
-
 import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
 import type { RoundExecutor } from '../types';
 import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@game/game-logic';
-import { IGetSubmissionResult } from '@game/db';
+import { IGetSubmissionIdsResult, IGetSubmissionResult } from '@game/db';
 import Prando from 'paima-sdk/paima-prando';
+import { normalizeAddress } from '../utils';
 
 export const queryEndpoints = {
   getRoundExecutor,
-  getUserSubmission,
-  testQuery,
+  getSubmissionIds
 };
 
 async function getRoundExecutor(
-  userAddress: string,
+  walletAddress: string,
+  submissionId: number
 ): Promise<Result<RoundExecutor<MatchState, TickEvent>>> {
   const errorFxn = buildEndpointErrorFxn('getRoundExecutor');
+  const address = normalizeAddress(walletAddress);
 
-  const address =
-    userAddress.startsWith("0x")
-      ? userAddress.slice(2, userAddress.length)
-      : userAddress;
+  const query = buildBackendQuery(
+    'user_submission',
+    {
+      wallet_address: address,
+      submission_id: submissionId
+    });
 
-  // Retrieve data:
-  let res: Response;
+  const data: Result<IGetSubmissionResult> =
+    await getData('getRoundExecutor', query);
+  if (!data.success) return data;
+
   try {
-    const query = backendQueryRoundExecutor(address);
-    res = await fetch(query);
-  } catch (err) {
-    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
-  }
-
-  let data: RoundExecutorData;
-  try {
-    data = (await res.json()) as RoundExecutorData;
-  } catch (err) {
-    return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-  }
-
-  // Process data:
-  try {
-    const executor = buildRoundExecutor(data, 1);
+    const executor = buildRoundExecutor(data.result, 1);
     return {
       success: true,
       result: executor,
@@ -53,33 +42,19 @@ async function getRoundExecutor(
   }
 }
 
-async function getUserSubmission(
-  userAddress: string,
-): Promise<Result<IGetSubmissionResult>> {
-  const wallet_address = // todo: clear address at frontend side
-    userAddress.startsWith("0x")
-      ? userAddress.slice(2, userAddress.length)
-      : userAddress;
-  const errorFxn = buildEndpointErrorFxn('getUserSubmission');
-  const endpoint = 'user_submission';
-  const options = {
-    wallet_address,
-  };
+async function getSubmissionIds(walletAddress: string) {
+  const errorFxn = buildEndpointErrorFxn('getSubmissionIds');
+  const address = normalizeAddress(walletAddress);
+  const query = buildBackendQuery(
+    'submission_ids',
+    { wallet_address: address });
 
-  
-  const query = buildBackendQuery(endpoint, options);
-  console.log("Submission query", query) 
-  const res = await fetch(query); 
-  const data = (await res.json()) as IGetSubmissionResult;
-  return {
-    success: true,
-    result: data,
-  };
+  const data: Result<IGetSubmissionIdsResult[]> =
+    await getData('getRoundExecutor', query);
+  console.log("getSubmissionIds", data)
+  // if (!data.success) return data;
 }
 
-async function testQuery(): Promise<string> {
-  return "test query result"
-}
 
 function buildRoundExecutor(
   submission: IGetSubmissionResult,
@@ -90,10 +65,26 @@ function buildRoundExecutor(
   return initRoundExecutor(userMove, randomnessGenerator);
 }
 
-export function backendQueryRoundExecutor(userAddress: string): string {
-  const endpoint = 'round_executor';
-  const options = {
-    userAddress,
-  };
-  return buildBackendQuery(endpoint, options);
+async function getData<T>(
+  endpoint: string,
+  query: string,
+): Promise<Result<T>> {
+  const errorFxn = buildEndpointErrorFxn(endpoint);
+
+  let res: Response;
+  try {
+    res = await fetch(query);
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
+
+  try {
+    const data = (await res.json()) as T;
+    return {
+      success: true,
+      result: data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
+  }
 }

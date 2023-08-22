@@ -1,9 +1,5 @@
-import { Controller, Get, Query, Route, ValidateError } from 'tsoa';
+import { Controller, Get, Query, Route } from 'tsoa';
 import { IGetSubmissionResult, getSubmission, requirePool } from '@game/db';
-import { isLeft } from 'fp-ts/Either';
-import { psqlNum } from '../validation.js';
-import type { RoundExecutorData } from '@game/utils';
-import { getBlockHeight } from 'paima-sdk/paima-db';
 
 type Response = IGetSubmissionResult | Error;
 
@@ -12,21 +8,21 @@ interface Error {
 }
 
 @Route('user_submission')
-export class USerSubmissionController extends Controller {
+export class UserSubmissionController extends Controller {
   @Get()
-  public async get(@Query() wallet_address: string): Promise<Response> {
+  public async get(
+    @Query() wallet_address: string,
+    @Query() submission_id: number
+  ): Promise<Response> {
     const pool = requirePool();
-    const [userSubmission] = await getSubmission.run({ address: wallet_address }, pool);
-    if (!userSubmission) return {error: 'User submission not found'}
+    const [userSubmission] = await getSubmission.run(
+      {
+        wallet_address: wallet_address,
+        submission_id: submission_id
+      },
+      pool
+    );
+    if (!userSubmission) return { error: 'User submission not found' }
     return userSubmission;
   }
 }
-
-// @Route('user_submission')
-// export class UserSubmissionController extends Controller {
-//   @Get()
-//   public async get(@Query() address: string): Promise<string> {
-//     return userAddress;
-//   }
-// }
-
