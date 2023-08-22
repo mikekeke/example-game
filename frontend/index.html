@@ -8,89 +8,91 @@
 
 <body>
     <div>
-        <p>Test2 </p>
-        <div id="buttons"></div>
+        <h2>Previous submission IDs</h2>
+        <label id="all-submission-ids"></label>
+    </div>
+
+    <div>
+        <h2>My submission</h2>
+        <input type="text" id="symbols" placeholder="symbols to guess">
+        <input type="text" id="morze-code" placeholder="morze code, space separated">
+        <button onclick="submitGuess()" id="submit-btn">Submit</button>
     </div>
     <div>
-        <p>Results:</p>
-        <div id="results"></div>
-        
+        <h2>Check result</h2>
+        <input type="number" id="submission-id" placeholder="leave blank for latest">
+        <button onclick="checkGuess()" id="check-btn">Check</button>
+        <div id="check-result"></div>
     </div>
 </body>
 <script src="./paimaMiddleware.js"></script>
 <script>
 
-    async function start() {
-        console.log("Start");
-        const wallet = await endpoints.userWalletLogin('metamask');
-        if (!wallet.success) throw new Error('Wallet Error');
+    let wallet;
+    const submitBtn = document.getElementById("submit-btn");
+    const submitSymbols = document.getElementById("symbols");
+    const morzeCodeGuess = document.getElementById("morze-code");
+    const submissionId = document.getElementById("submission-id");
+    const checkBtn = document.getElementById("check-btn");
+    const checkResult = document.getElementById("check-result");
+    const allSubmissionIds = document.getElementById("all-submission-ids");
 
-
-
-        // const user = await endpoints.getUserStats(wallet.result.walletAddress);
-        // console.log(user)
-        // if (!user.success) {
-        //     throw new Error('User Error');
-        // }
-        // user.lol = "test lol";
-        // console.log(user.lol)
-        // if (!user.stats) {
-        //     console.log(user.stats)
-        // }
-
-        const buttonsDiv = document.getElementById("buttons");
-        const resultsDiv = document.getElementById("results");
-
-        // submit button
-        let submit = document.createElement("submit-button");
-        // login.style = 'width:50px; margin: 4px;'
-        submit.innerHTML = "Submit";
-        submit.onclick = () => {
-            endpoints.submitGuess(
-                wallet.result.walletAddress,
-                "DAB",
-                "100+01+010"
-            ).then(r => console.log("SubmitGuess", r));
-        }
-        buttonsDiv.appendChild(submit);
-
-        // query test
-        let query = document.createElement("query-button");
-        // login.style = 'width:50px; margin: 4px;'
-        query.innerHTML = "Query";
-        query.onclick = () => {
-            endpoints.getSubmissionIds(
-                wallet.result.walletAddress
-            ).then(r => console.log("Query submission", r));
-        }
-        buttonsDiv.appendChild(query);
-
-        // run check 
-        let check = document.createElement("query-button");
-        // login.style = 'width:50px; margin: 4px;'
-        check.innerHTML = "Check";
-        check.onclick = () => {
-            endpoints.getRoundExecutor(
-                wallet.result.walletAddress,
-                24
-            ).then(res => processExecutor(res.result, resultsDiv)
-            );
-        }
-        buttonsDiv.appendChild(check);
+    async function submitGuess() {
+        console.log(submitSymbols.value)
+        endpoints.submitGuess(
+            wallet.result.walletAddress,
+            submitSymbols.value,
+            morzeCodeGuess.value
+        ).then(r => console.log("SubmitGuess", r));
     }
-    start().then(r => r);
 
-    async function processExecutor(re, resultsDiv) {
-        console.log("RE", re)
+    async function checkGuess() {
+        while (checkResult.firstChild) {
+            checkResult.removeChild(checkResult.lastChild);
+        }
+
+        endpoints.getRoundExecutor(
+            wallet.result.walletAddress,
+            submissionId.value
+        ).then(
+            res => processExecutor(res.result)
+        );
+    }
+
+    async function setup() {
+        console.log("Start");
+        wallet = await endpoints.userWalletLogin('metamask');
+
+        if (!wallet.success) {
+            submitBtn.disabled = true;
+            checkBtn.disabled = true;
+            throw new Error('Wallet Error');
+        }
+
+        const allSubmissions = await endpoints.getSubmissionIds(wallet.result.walletAddress);
+
+        if (!allSubmissions.success) {
+            console.error("Could not get submission IDs");
+            alert("Could not get submission IDs");
+        }
+
+        allSubmissions.result.forEach(subId => {
+            allSubmissionIds.innerHTML = allSubmissionIds.innerHTML + " " + subId.submission_id
+        });
+    }
+    setup().then(r => r);
+
+    async function processExecutor(roundEx) {
+        console.log("Round Executor", roundEx)
         // console.log("ES", re.endState())
         let eject = 0;
         let ticks = [];
-        for (ticks = re.tick(); ticks != null; ticks = re.tick()) {
+        for (ticks = roundEx.tick(); ticks != null; ticks = roundEx.tick()) {
             let tick = ticks[0];
             console.log(tick);
             var p = document.createElement("p");
             p.innerHTML = tick.symbol + " as " + tick.code + " => " + (tick.isCorrect ? "Correct!" : "Wrong!");
-            resultsDiv.appendChild(p);
+            checkResult.appendChild(p);
             await new Promise(r => setTimeout(r, 1000));
             eject += 1;
             if (eject > 10) return;

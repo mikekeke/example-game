@@ -42,7 +42,7 @@ async function getRoundExecutor(
   }
 }
 
-async function getSubmissionIds(walletAddress: string) {
+async function getSubmissionIds(walletAddress: string): Promise<Result<IGetSubmissionIdsResult[]>> {
   const errorFxn = buildEndpointErrorFxn('getSubmissionIds');
   const address = normalizeAddress(walletAddress);
   const query = buildBackendQuery(
@@ -51,8 +51,7 @@ async function getSubmissionIds(walletAddress: string) {
 
   const data: Result<IGetSubmissionIdsResult[]> =
     await getData('getRoundExecutor', query);
-  console.log("getSubmissionIds", data)
-  // if (!data.success) return data;
+  return data;
 }
 
 

@@ -78,5 +78,5 @@ export function matchesCoding(symbol: string, code: string): boolean {
 }
 
 export function getCoding(symbol: string): string {
-  return letterToCodeMap.get(symbol)!
+  return letterToCodeMap.get(symbol.toUpperCase())!
 }
