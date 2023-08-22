@@ -4,13 +4,13 @@ import { buildBackendQuery, PaimaMiddlewareErrorCode } from 'paima-sdk/paima-mw-
 import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
 import type { RoundExecutor } from '../types';
 import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@game/game-logic';
-import { IGetSubmissionIdsResult, IGetSubmissionResult } from '@game/db';
+import { ISubmissionDataResult, IGetSubmissionResult } from '@game/db';
 import Prando from 'paima-sdk/paima-prando';
 import { normalizeAddress } from '../utils';
 
 export const queryEndpoints = {
   getRoundExecutor,
-  getSubmissionIds
+  getSubmissionsData
 };
 
 async function getRoundExecutor(
@@ -42,14 +42,14 @@ async function getRoundExecutor(
   }
 }
 
-async function getSubmissionIds(walletAddress: string): Promise<Result<IGetSubmissionIdsResult[]>> {
+async function getSubmissionsData(walletAddress: string): Promise<Result<ISubmissionDataResult[]>> {
   const errorFxn = buildEndpointErrorFxn('getSubmissionIds');
   const address = normalizeAddress(walletAddress);
   const query = buildBackendQuery(
-    'submission_ids',
+    'submissions_data',
     { wallet_address: address });
 
-  const data: Result<IGetSubmissionIdsResult[]> =
+  const data: Result<ISubmissionDataResult[]> =
     await getData('getRoundExecutor', query);
   return data;
 }

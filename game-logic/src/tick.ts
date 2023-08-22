@@ -1,5 +1,5 @@
 import type Prando from 'paima-sdk/paima-prando';
-import { type MatchState, type MatchEnvironment, type TickEvent, type MatchMove, getNextPair } from './types';
+import { type MatchState, type MatchEnvironment, TickEvent, type MatchMove, getNextPair } from './types';
 import { matchesCoding } from './morze';
 
 // Executes a round executor tick and generates a tick event as a result
@@ -22,18 +22,10 @@ export function processTick(
 
   let te: TickEvent;
   if (matchesCoding(symbol, code)) {
-    te = {
-      isCorrect: true,
-      symbol: symbol,
-      code: code
-    };
+    te = TickEvent.new(true, symbol, code);
 
   } else {
-    te = {
-      isCorrect: false,
-      symbol: symbol,
-      code: code
-    }
+    te = TickEvent.new(false, symbol, code);
   }
   applyEvents(matchState, te);
   return [te];

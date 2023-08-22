@@ -1,3 +1,5 @@
+import { fromOnChainRepr } from '@game/utils';
+
 // Taken from https://github.com/mvukic/morse-code/blob/master/src/data/alphabet.ts
 const lettersAndCodes: [string, string][] = [
   ['A', '.-'],
@@ -68,12 +70,7 @@ const codeToLetterMap: Map<string, string> = new Map(
 
 export function matchesCoding(symbol: string, code: string): boolean {
   const coding = getCoding(symbol);
-
-  // todo: handle conversion better somehow
-  const morzeCode = code.replaceAll("0", ".").replaceAll("1", "-");
-
-  const result = coding === morzeCode;
-  console.log("Single result: ", coding, morzeCode, result);
+  const result = coding === fromOnChainRepr(code);
   return result;
 }
 

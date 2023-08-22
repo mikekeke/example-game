@@ -11,5 +11,8 @@
     "lint": "prettier --write '**/*.ts'"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@game/utils": "file:../utils"
+  }
 }

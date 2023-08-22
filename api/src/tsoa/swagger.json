@@ -6,16 +6,20 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IGetSubmissionIdsResult": {
-				"description": "'GetSubmissionIds' return type",
+			"ISubmissionDataResult": {
+				"description": "'SubmissionData' return type",
 				"properties": {
 					"submission_id": {
 						"type": "number",
 						"format": "double"
+					},
+					"symbols": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"submission_id"
+					"submission_id",
+					"symbols"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -40,7 +44,7 @@
 				"anyOf": [
 					{
 						"items": {
-							"$ref": "#/components/schemas/IGetSubmissionIdsResult"
+							"$ref": "#/components/schemas/ISubmissionDataResult"
 						},
 						"type": "array"
 					},
@@ -63,7 +67,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/submission_ids": {
+		"/submissions_data": {
 			"get": {
 				"operationId": "Get",
 				"responses": {

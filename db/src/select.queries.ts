@@ -38,34 +38,37 @@ const getSubmissionIR: any = {"usedParamSet":{"wallet_address":true,"submission_
 export const getSubmission = new PreparedQuery<IGetSubmissionParams,IGetSubmissionResult>(getSubmissionIR);
 
 
-/** 'GetSubmissionIds' parameters type */
-export interface IGetSubmissionIdsParams {
+/** 'SubmissionData' parameters type */
+export interface ISubmissionDataParams {
   wallet_address: string | null | void;
 }
 
-/** 'GetSubmissionIds' return type */
-export interface IGetSubmissionIdsResult {
+/** 'SubmissionData' return type */
+export interface ISubmissionDataResult {
   submission_id: number;
+  symbols: string;
 }
 
-/** 'GetSubmissionIds' query type */
-export interface IGetSubmissionIdsQuery {
-  params: IGetSubmissionIdsParams;
-  result: IGetSubmissionIdsResult;
+/** 'SubmissionData' query type */
+export interface ISubmissionDataQuery {
+  params: ISubmissionDataParams;
+  result: ISubmissionDataResult;
 }
 
-const getSubmissionIdsIR: any = {"usedParamSet":{"wallet_address":true},"params":[{"name":"wallet_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":85,"b":99}]}],"statement":"select submissions.submission_id\nfrom submissions\nwhere\nsubmissions.wallet_address = :wallet_address\norder by (submission_id) desc"};
+const submissionDataIR: any = {"usedParamSet":{"wallet_address":true},"params":[{"name":"wallet_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":111,"b":125}]}],"statement":"select \n  submissions.submission_id,\n  submissions.symbols\nfrom submissions\nwhere\nsubmissions.wallet_address = :wallet_address\norder by (submission_id) desc"};
 
 /**
  * Query generated from SQL:
  * ```
- * select submissions.submission_id
+ * select 
+ *   submissions.submission_id,
+ *   submissions.symbols
  * from submissions
  * where
  * submissions.wallet_address = :wallet_address
  * order by (submission_id) desc
  * ```
  */
-export const getSubmissionIds = new PreparedQuery<IGetSubmissionIdsParams,IGetSubmissionIdsResult>(getSubmissionIdsIR);
+export const submissionData = new PreparedQuery<ISubmissionDataParams,ISubmissionDataResult>(submissionDataIR);
 
 

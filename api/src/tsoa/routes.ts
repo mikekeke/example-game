@@ -3,7 +3,7 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { SubmissionIdsController } from './../controllers/submissionIds';
+import { SubmissionIdsController } from './../controllers/submissionData';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MyTestController } from './../controllers/testRoute';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -14,10 +14,11 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IGetSubmissionIdsResult": {
+    "ISubmissionDataResult": {
         "dataType": "refObject",
         "properties": {
             "submission_id": {"dataType":"double","required":true},
+            "symbols": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -32,7 +33,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Response": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"IGetSubmissionIdsResult"}},{"ref":"Error"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"ISubmissionDataResult"}},{"ref":"Error"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -45,7 +46,7 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/submission_ids',
+        app.get('/submissions_data',
             ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController)),
             ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController.prototype.get)),
 

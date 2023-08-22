@@ -1,8 +1,22 @@
+import { fromOnChainRepr } from "@game/utils";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TickEvent {
-  isCorrect: boolean,
-  symbol: string,
-  code: string
+export class TickEvent {
+  isCorrect: boolean;
+  symbol: string;
+  onChainCode: string;
+  morzeCode: string;
+
+  private constructor(isCorrect: boolean, symbol: string, onChainCode: string, morzeCode: string) {
+    this.isCorrect = isCorrect;
+    this.symbol = symbol;
+    this.onChainCode = onChainCode;
+    this.morzeCode = morzeCode;
+  }
+
+  public static new(isCorrect: boolean, symbol: string, onChainCode: string): TickEvent {
+    return new TickEvent(isCorrect, symbol, onChainCode, fromOnChainRepr(onChainCode));
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

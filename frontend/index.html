@@ -8,27 +8,29 @@
 
 <body>
     <div>
-        <h2>Previous submission IDs</h2>
-        <label id="all-submission-ids"></label>
+        <h2>Previous submissions</h2>
+        <select id="all-submission-ids" size="5"></select>
     </div>
-
     <div>
         <h2>My submission</h2>
-        <input type="text" id="symbols" placeholder="symbols to guess">
+        <input type="text" id="symbols" placeholder="(single) word to guess">
         <input type="text" id="morze-code" placeholder="morze code, space separated">
         <button onclick="submitGuess()" id="submit-btn">Submit</button>
     </div>
     <div>
         <h2>Check result</h2>
-        <input type="number" id="submission-id" placeholder="leave blank for latest">
+        <input type="number" id="submission-id" placeholder="leave blank to check latest">
         <button onclick="checkGuess()" id="check-btn">Check</button>
-        <div id="check-result"></div>
+        <div><label id="checking-now"></label></div>
+        <div id="check-result">
+        </div>
     </div>
 </body>
 <script src="./paimaMiddleware.js"></script>
 <script>
 
     let wallet;
+    let submissionsData;
     const submitBtn = document.getElementById("submit-btn");
     const submitSymbols = document.getElementById("symbols");
     const morzeCodeGuess = document.getElementById("morze-code");
@@ -36,6 +38,31 @@
     const checkBtn = document.getElementById("check-btn");
     const checkResult = document.getElementById("check-result");
     const allSubmissionIds = document.getElementById("all-submission-ids");
+    const checkingNowLbl = document.getElementById("checking-now");
+
+    async function setup() {
+        console.log("Start");
+        wallet = await endpoints.userWalletLogin('metamask');
+
+        if (!wallet.success) {
+            submitBtn.disabled = true;
+            checkBtn.disabled = true;
+            throw new Error('Wallet Error');
+        }
+
+        submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
+
+        if (!submissionsData.success) {
+            console.error("Could not get submission IDs");
+            alert("Could not get submission IDs");
+        }
+
+        submissionsData.result.forEach(subData => {
+            var option = document.createElement("option");
+            option.text = "#" + subData.submission_id + " " + subData.symbols;
+            allSubmissionIds.add(option);
+        });
+    }
 
     async function submitGuess() {
         console.log(submitSymbols.value)
@@ -51,53 +78,45 @@
             checkResult.removeChild(checkResult.lastChild);
         }
 
+        if (submissionsData.result.length == 0) {
+            alert("No submissions to check");
+            return;
+        }
+
+        let subId = submissionId.value;
+        if (!subId) subId = submissionsData.result[0].submission_id;
+
+        checkingNowLbl.innerHTML =
+            "Checking submission #" + subId
+            + " for " + "`" + submissionsData.result[0].symbols + "`";
+
         endpoints.getRoundExecutor(
             wallet.result.walletAddress,
-            submissionId.value
+            subId
         ).then(
             res => processExecutor(res.result)
         );
     }
 
-    async function setup() {
-        console.log("Start");
-        wallet = await endpoints.userWalletLogin('metamask');
-
-        if (!wallet.success) {
-            submitBtn.disabled = true;
-            checkBtn.disabled = true;
-            throw new Error('Wallet Error');
-        }
-
-        const allSubmissions = await endpoints.getSubmissionIds(wallet.result.walletAddress);
-
-        if (!allSubmissions.success) {
-            console.error("Could not get submission IDs");
-            alert("Could not get submission IDs");
-        }
-
-        allSubmissions.result.forEach(subId => {
-            allSubmissionIds.innerHTML = allSubmissionIds.innerHTML + " " + subId.submission_id
-        });
-    }
-    setup().then(r => r);
-
     async function processExecutor(roundEx) {
         console.log("Round Executor", roundEx)
-        // console.log("ES", re.endState())
-        let eject = 0;
         let ticks = [];
         for (ticks = roundEx.tick(); ticks != null; ticks = roundEx.tick()) {
             let tick = ticks[0];
             console.log(tick);
             var p = document.createElement("p");
-            p.innerHTML = tick.symbol + " as " + tick.code + " => " + (tick.isCorrect ? "Correct!" : "Wrong!");
+            p.innerHTML =
+                (tick.isCorrect ? "✅" : "❌")
+                + "`" + tick.symbol + "`"
+                + " as "
+                + "`" + tick.morzeCode + "`";
+
             checkResult.appendChild(p);
-            await new Promise(r => setTimeout(r, 1000));
-            eject += 1;
-            if (eject > 10) return;
+            await new Promise(r => setTimeout(r, 500));
         }
     }
+
+    setup().then(r => r);
 
 </script>
 
