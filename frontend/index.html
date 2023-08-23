@@ -8,6 +8,12 @@
 
 <body>
     <div>
+        <h2>Contract call debug</h2>
+        <button onclick="callContract()" id="call-contract">Call contract</button>
+
+    </div>
+
+    <div>
         <h2>Previous submissions</h2>
         <select id="all-submission-ids" size="5"></select>
     </div>
@@ -29,6 +35,14 @@
 <script src="./paimaMiddleware.js"></script>
 <script>
 
+
+    async function callContract() {
+        console.log("Test call NFT to contract")
+        const res = await endpoints.getSigner();
+        console.log("FE RES:", res);
+
+    }
+
     let wallet;
     let submissionsData;
     const submitBtn = document.getElementById("submit-btn");
@@ -43,6 +57,7 @@
     async function setup() {
         console.log("Start");
         wallet = await endpoints.userWalletLogin('metamask');
+        console.log("wallet", wallet);
 
         if (!wallet.success) {
             submitBtn.disabled = true;

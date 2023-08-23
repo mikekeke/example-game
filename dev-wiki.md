@@ -34,8 +34,6 @@ then
 cd db && npm run build && cd .. && npm run compile:api && npm run compile:db
 ```
 
-
-
 ```
 npm run pack && npm run pack:middleware
 ```
@@ -90,4 +88,10 @@ To automatically add this contract's Data to your game node database, you can co
 Deployed contract addresses:
    NativeNftSale: 0xd52A1dC13dEDCF0d15Da26e66948a8Bd5fD9f26d
    NativeProxy:   0xe63A50CcD585Dc01A067468f89350368251C5BC4
+```
+
+
+## PKEY
+```
+dc18907660410084b16f4a960f283491859bf48995f5c1bd7201383bb723ee56
 ```
