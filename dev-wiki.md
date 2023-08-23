@@ -39,3 +39,55 @@ cd db && npm run build && cd .. && npm run compile:api && npm run compile:db
 ```
 npm run pack && npm run pack:middleware
 ```
+
+## NFT install
+
+```
+nvm use 16.20.0
+npm i
+./deploy.sh
+```
+
+### RPS one
+
+```
+Deployed contract addresses:
+   Nft: 0x95Da09050FdB318C2C9D0B142F07877cB5bf5E22
+
+To automatically add this contract's Data to your game node database, you can copy and paste the following to your CDE config file:
+  - name: "Test NFT contract"
+    type: erc721
+    contractAddress: "0x95Da09050FdB318C2C9D0B142F07877cB5bf5E22"
+    startBlockHeight: 51
+    initializationPrefix: "nftmint"
+```
+
+```
+Deployed contract addresses:
+   NativeNftSale: 0x3c463c0EBDaEbe2B85E505d6df9E985292361898
+   NativeProxy:   0x9ac22615B3A888f9EB5D2B26746AccF1E3dd28B2
+```
+
+
+
+### Test one
+#### NFT contract
+
+```
+Deployed contract addresses:
+   Nft: 0xDa57b992D4a9Ec978944bD6591a9A99F0850f645
+
+To automatically add this contract's Data to your game node database, you can copy and paste the following to your CDE config file:
+  - name: "Test NFT contract"
+    type: erc721
+    contractAddress: "0xDa57b992D4a9Ec978944bD6591a9A99F0850f645"
+    startBlockHeight: 0
+    initializationPrefix: "nftmint"
+```
+
+#### Sale contract
+```
+Deployed contract addresses:
+   NativeNftSale: 0xd52A1dC13dEDCF0d15Da26e66948a8Bd5fD9f26d
+   NativeProxy:   0xe63A50CcD585Dc01A067468f89350368251C5BC4
+```

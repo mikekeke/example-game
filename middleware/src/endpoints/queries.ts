@@ -42,15 +42,19 @@ async function getRoundExecutor(
   }
 }
 
-async function getSubmissionsData(walletAddress: string): Promise<Result<ISubmissionDataResult[]>> {
-  const errorFxn = buildEndpointErrorFxn('getSubmissionIds');
+export interface SubmissionData {
+  submission_id: number;
+  symbols: string;
+}
+
+async function getSubmissionsData(walletAddress: string): Promise<Result<SubmissionData[]>> {
   const address = normalizeAddress(walletAddress);
   const query = buildBackendQuery(
     'submissions_data',
     { wallet_address: address });
 
-  const data: Result<ISubmissionDataResult[]> =
-    await getData('getRoundExecutor', query);
+  const data: Result<SubmissionData[]> =
+    await getData('getSubmissionsData', query);
   return data;
 }
 
@@ -59,7 +63,7 @@ function buildRoundExecutor(
   submission: IGetSubmissionResult,
   round: number
 ): RoundExecutor<MatchState, TickEvent> {
-  const randomnessGenerator = new Prando(12);
+  const randomnessGenerator = new Prando(1);
   const userMove: MatchMove = MatchMove.fromData(submission.symbols, submission.guess);
   return initRoundExecutor(userMove, randomnessGenerator);
 }
