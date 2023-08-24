@@ -38,7 +38,7 @@
 
     async function callContract() {
         console.log("Test call NFT to contract")
-        const res = await endpoints.getSigner();
+        const res = await endpoints.testNftEndpoint();
         console.log("FE RES:", res);
 
     }
@@ -65,18 +65,21 @@
             throw new Error('Wallet Error');
         }
 
+        // Previous submissions data for UI
         submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
-
         if (!submissionsData.success) {
             console.error("Could not get submission IDs");
             alert("Could not get submission IDs");
         }
-
         submissionsData.result.forEach(subData => {
             var option = document.createElement("option");
             option.text = "#" + subData.submission_id + " " + subData.symbols;
             allSubmissionIds.add(option);
         });
+
+        //Achievements data for UI
+        const achs = await endpoints.getAchievements(wallet.result.walletAddress);
+        console.log("Achievements", achs);
     }
 
     async function submitGuess() {

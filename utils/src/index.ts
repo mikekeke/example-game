@@ -8,3 +8,4 @@ export const PRACTICE_BOT_ADDRESS = '0x0';
 
 export * from './types.js';
 export * from './morze_conversions.js';
+export * from './achievements.js';

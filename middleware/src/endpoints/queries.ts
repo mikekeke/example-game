@@ -7,10 +7,12 @@ import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@
 import { ISubmissionDataResult, IGetSubmissionResult } from '@game/db';
 import Prando from 'paima-sdk/paima-prando';
 import { normalizeAddress } from '../utils';
+import { Achievements } from '@game/utils';
 
 export const queryEndpoints = {
   getRoundExecutor,
-  getSubmissionsData
+  getSubmissionsData,
+  getAchievements,
 };
 
 async function getRoundExecutor(
@@ -58,6 +60,16 @@ async function getSubmissionsData(walletAddress: string): Promise<Result<Submiss
   return data;
 }
 
+
+async function getAchievements(walletAddress: string): Promise<Result<Achievements>> {
+  const query = buildBackendQuery(
+    'achievements',
+    { wallet_address: walletAddress });
+
+  const data: Result<Achievements> =
+    await getData('getAchievements', query);
+  return data;
+}
 
 function buildRoundExecutor(
   submission: IGetSubmissionResult,

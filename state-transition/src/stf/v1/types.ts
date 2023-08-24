@@ -1,15 +1,13 @@
-import { WalletAddress } from "paima-sdk/paima-utils";
+import { ContractAddress, WalletAddress } from "paima-sdk/paima-utils";
 
 export type ParsedSubmittedInput =
   | InvalidInput
   | SubmitGuess
-  // | SubmitMoveInput
-  // | SubmitIncrementInput
-  // | JoinWorldInput;
+  | AchievementNftMint
 
 export interface SubmitGuess {
   input: 'submitGuess';
-  address:WalletAddress;
+  address: WalletAddress;
   symbols: string;
   guess: string;
 }
@@ -17,17 +15,22 @@ export interface InvalidInput {
   input: 'invalidString';
 }
 
-// export interface JoinWorldInput {
-//   input: 'joinWorld';
-// }
+// NFT Mint
+// taken from https://github.com/PaimaStudios/paima-game-templates/blob/main/nft-lvlup/state-transition/src/stf/v1/types.ts
+export interface ScheduledDataInput {
+  input: 'scheduledData';
+}
 
-// export interface SubmitMoveInput {
-//   input: 'submitMove';
-//   x: number;
-//   y: number;
-// }
-// export interface SubmitIncrementInput {
-//   input: 'submitIncrement';
-//   x: number;
-//   y: number;
-// }
+export interface AchievementNftMint extends ScheduledDataInput {
+  effect: 'achievementNftMint';
+  tokenId: string;
+  address: ContractAddress;
+  type: NftType;
+}
+
+export const characters = ['fire', 'water'] as const;
+export type NftType = typeof characters[number];
+
+export function isAchievementNft(input: ScheduledDataInput): input is AchievementNftMint {
+  return (input as AchievementNftMint).effect === 'achievementNftMint';
+}

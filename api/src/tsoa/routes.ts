@@ -3,6 +3,8 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AchievementController } from './../controllers/achievements';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SubmissionIdsController } from './../controllers/submissionData';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MyTestController } from './../controllers/testRoute';
@@ -14,11 +16,17 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "ISubmissionDataResult": {
+    "Achievement": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Achievements": {
         "dataType": "refObject",
         "properties": {
-            "submission_id": {"dataType":"double","required":true},
-            "symbols": {"dataType":"string","required":true},
+            "contractAddress": {"dataType":"string","required":true},
+            "nftId": {"dataType":"string","required":true},
+            "achievements": {"dataType":"array","array":{"dataType":"refAlias","ref":"Achievement"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -26,14 +34,14 @@ const models: TsoaRoute.Models = {
     "Error": {
         "dataType": "refObject",
         "properties": {
-            "error": {"dataType":"enum","enums":["Submissions not found"],"required":true},
+            "error": {"dataType":"enum","enums":["Achievements not found"],"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Response": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"ISubmissionDataResult"}},{"ref":"Error"}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"ref":"Achievements"},{"ref":"Error"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -46,6 +54,31 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.get('/achievements',
+            ...(fetchMiddlewares<RequestHandler>(AchievementController)),
+            ...(fetchMiddlewares<RequestHandler>(AchievementController.prototype.get)),
+
+            function AchievementController_get(request: any, response: any, next: any) {
+            const args = {
+                    wallet_address: {"in":"query","name":"wallet_address","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AchievementController();
+
+
+              const promise = controller.get.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/submissions_data',
             ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController)),
             ...(fetchMiddlewares<RequestHandler>(SubmissionIdsController.prototype.get)),

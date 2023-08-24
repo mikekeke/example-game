@@ -6,20 +6,28 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"ISubmissionDataResult": {
-				"description": "'SubmissionData' return type",
+			"Achievement": {
+				"type": "string"
+			},
+			"Achievements": {
 				"properties": {
-					"submission_id": {
-						"type": "number",
-						"format": "double"
-					},
-					"symbols": {
+					"contractAddress": {
 						"type": "string"
+					},
+					"nftId": {
+						"type": "string"
+					},
+					"achievements": {
+						"items": {
+							"$ref": "#/components/schemas/Achievement"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
-					"submission_id",
-					"symbols"
+					"contractAddress",
+					"nftId",
+					"achievements"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -29,7 +37,7 @@
 					"error": {
 						"type": "string",
 						"enum": [
-							"Submissions not found"
+							"Achievements not found"
 						],
 						"nullable": false
 					}
@@ -43,10 +51,7 @@
 			"Response": {
 				"anyOf": [
 					{
-						"items": {
-							"$ref": "#/components/schemas/ISubmissionDataResult"
-						},
-						"type": "array"
+						"$ref": "#/components/schemas/Achievements"
 					},
 					{
 						"$ref": "#/components/schemas/Error"
@@ -67,6 +72,34 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/achievements": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Response"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "wallet_address",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/submissions_data": {
 			"get": {
 				"operationId": "Get",
