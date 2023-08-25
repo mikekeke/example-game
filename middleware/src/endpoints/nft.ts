@@ -10,9 +10,9 @@ export async function enableAchievements(walletAddress: string) {
   console.log("mw: signer", signer);
 
 
-  //todo: get from CDE
+  //todo: better way to put hardcoded hex
   const contr = NativeNftSale__factory.connect(
-    "e8C2c3494aee4F0699eEB18c5789f4863CdCDA46",
+    "4F04B4A9964e45A9226564479448B4e4F0b33398",
     signer
   );
 

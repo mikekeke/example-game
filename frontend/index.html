@@ -8,7 +8,8 @@
 
 <body>
     <div>
-        <h2>Contract call debug</h2>
+        <h2>Achievements</h2>
+        <pre id="achievements"></pre>
         <button onclick="enableAchievements()" id="enable-achievements">Enable achievements</button>
 
     </div>
@@ -53,6 +54,7 @@
     const allSubmissionIds = document.getElementById("all-submission-ids");
     const checkingNowLbl = document.getElementById("checking-now");
     const enableAchievementsBtn = document.getElementById("enable-achievements");
+    const achievementsPre = document.getElementById("achievements");
 
     async function setup() {
         console.log("Start");
@@ -88,7 +90,10 @@
 
         //Achievements data for UI
         const achs = await endpoints.getAchievements(wallet.result.walletAddress);
-        console.log("Achievements", achs);
+        if (achs) {
+            enableAchievementsBtn.style.display = 'none';
+            achievementsPre.textContent = JSON.stringify(achs, undefined, 2);
+        }
     }
 
     async function submitGuess() {

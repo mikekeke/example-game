@@ -92,13 +92,14 @@ export interface IGetAchievementsByOwnedQuery {
   result: IGetAchievementsByOwnedResult;
 }
 
-const getAchievementsByOwnedIR: any = {"usedParamSet":{"nft_ids":true},"params":[{"name":"nft_ids","required":false,"transform":{"type":"array_spread"},"locs":[{"a":43,"b":50}]}],"statement":"select * from achievements\nwhere nft_id in :nft_ids"};
+const getAchievementsByOwnedIR: any = {"usedParamSet":{"nft_ids":true},"params":[{"name":"nft_ids","required":false,"transform":{"type":"array_spread"},"locs":[{"a":43,"b":50}]}],"statement":"select * from achievements\nwhere nft_id in :nft_ids\norder by nft_id"};
 
 /**
  * Query generated from SQL:
  * ```
  * select * from achievements
  * where nft_id in :nft_ids
+ * order by nft_id
  * ```
  */
 export const getAchievementsByOwned = new PreparedQuery<IGetAchievementsByOwnedParams,IGetAchievementsByOwnedResult>(getAchievementsByOwnedIR);

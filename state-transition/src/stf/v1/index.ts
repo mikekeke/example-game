@@ -4,11 +4,12 @@ import parse from './parser.js';
 import type Prando from 'paima-sdk/paima-prando';
 import type { SubmittedChainData } from 'paima-sdk/paima-utils';
 import type { SQLUpdate } from 'paima-sdk/paima-db';
-import { insertSubmission, IInsertSubmissionParams, getAchievementsByOwned, IGetAchievementsByOwnedResult, getAchievements, GetAchievementsError } from '@game/db';
+import { insertSubmission, IInsertSubmissionParams, getAchievementsByOwned, IGetAchievementsByOwnedResult, getAchievements } from '@game/db';
 import { ScheduledDataInput, SubmitGuess, isAchievementNft } from './types.js';
 import { MatchMove, initRoundExecutor } from '@game/game-logic';
 
 import { initAchievementsQuery, updateAchievements } from './updates.js';
+import { getNftOwner } from 'paima-sdk/paima-utils-backend';
 
 export default async function (
   inputData: SubmittedChainData,
@@ -28,7 +29,7 @@ export default async function (
       return processSubmission(input, dbConn, randomnessGenerator, walletAddress);
     case 'scheduledData':
       if (!inputData.scheduled) return [];
-      return processScheduled(input, walletAddress, dbConn);
+      return processScheduled(input, dbConn);
     default:
       console.warn("Unexpected input", input);
       return [];
@@ -53,16 +54,14 @@ async function processSubmission(
   //todo: factor out to separate function?
   const achievementsResult = await getAchievements(walletAddress, dbConn);
   let achievementsUpdate: SQLUpdate[] = [];
-  if ((achievementsResult as GetAchievementsError).error) {
-    console.error((achievementsResult as GetAchievementsError).error)
-  };
   if (!achievementsResult) {
-    console.log(`Achievements not enabled for user ${walletAddress}`);
+    console.log(`Achievements are not enabled for the user ${walletAddress}`);
   } else {
+    console.log(`Updating achievements for the user ${walletAddress}`);
     const achievements = achievementsResult as IGetAchievementsByOwnedResult;
     achievementsUpdate = await updateAchievements(achievements, walletAddress, dbConn);
   };
-  
+
   // handling submission
   //todo: factor out to separate function?
   const params: IInsertSubmissionParams =
@@ -77,17 +76,33 @@ async function processSubmission(
 
 async function processScheduled(
   input: ScheduledDataInput,
-  walletAddress: string,
   dbConn: Pool
 ): Promise<SQLUpdate[]> {
   if (isAchievementNft(input)) {
     console.log("PE: got mint NFT");
+    const walletAddress = await getNftOwner(
+      dbConn,
+      "Achievements NFT contract", //todo: get from CDE
+      BigInt(input.tokenId)
+    );
+    if (!walletAddress) {
+      console.warn(`
+        WARNING!
+        Owner of NFT ${input.tokenId} not found in the database.
+        This achievement NFT is not tracked by the node, no state will be created.
+       `);
+      return [];
+    }
     const achievements = await getAchievements(walletAddress, dbConn);
     if (achievements) {
-      console.warn("No new state for NFT will be created: user already have achievements enabled or db is broken", achievements)
+      console.warn(`
+        WARNING!
+        Although mint input is processed by the game node, 
+        user already have achievements instance in the database associated with another NFT.
+        So no state for the new NFT will be created.`);
+      return [];
     }
     return [initAchievementsQuery(input)];
   }
   return [];
 }
-

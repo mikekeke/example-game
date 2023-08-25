@@ -25,7 +25,8 @@ order by (submission_id) desc;
   @param nft_ids -> (...)
 */
 select * from achievements
-where nft_id in :nft_ids;
+where nft_id in :nft_ids
+order by nft_id;
 
 /*
  @name wins_count

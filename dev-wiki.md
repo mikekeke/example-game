@@ -109,6 +109,15 @@ docker rm generic-postgres && docker volume rm docker_example-game-00-db
 
 ```
 Deployed contract addresses:
-   NativeNftSale: 0x1531249D49927a448aA0338AD694B524708d0928
-   NativeProxy:   0xe8C2c3494aee4F0699eEB18c5789f4863CdCDA46
+   NativeNftSale: 0xB7093F0d2b39821aFe7D525Eb46CA5cf04d5a1a4
+   NativeProxy:   0x4F04B4A9964e45A9226564479448B4e4F0b33398
 ```
+
+## Achievements
+All achievement currently stored under single stateful NFT.
+
+There is no way to forbid suer to mint achievement NFT, e.g. by calling contract directly. But the DB layer:
+- will not create state for NFT if another achievement NFT already exist for the user
+- even if state will be somehow created, SQL query always returns NFT single state for the NFT with lowest ID
+
+Mint inputs, though, will stay in L2 contract.

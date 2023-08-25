@@ -1,5 +1,5 @@
 import { Controller, Get, Query, Route, } from 'tsoa';
-import { ISubmissionDataResult, submissionData, requirePool, getAchievements, GetAchievementsError, IGetAchievementsByOwnedResult } from '@game/db';
+import { ISubmissionDataResult, submissionData, requirePool, getAchievements, IGetAchievementsByOwnedResult } from '@game/db';
 import { Achievements } from '@game/utils';
 import e from 'express';
 
@@ -19,16 +19,11 @@ export class AchievementController extends Controller {
     if (!result) {
       return { error: "Achievements not found" }
     };
-
-    if ((result as GetAchievementsError).error) {
-      return { error: (result as GetAchievementsError).error }
-    };
-
-    const achievements = result as IGetAchievementsByOwnedResult;
+    
     return {
-      contractAddress: achievements.contract_address,
-      nftId: achievements.nft_id,
-      achievements: achievements.achievements
+      contractAddress: result.contract_address,
+      nftId: result.nft_id,
+      achievements: result.achievements
     };
   }
 }
