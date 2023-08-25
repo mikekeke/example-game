@@ -9,7 +9,7 @@
 <body>
     <div>
         <h2>Contract call debug</h2>
-        <button onclick="callContract()" id="call-contract">Call contract</button>
+        <button onclick="enableAchievements()" id="enable-achievements">Enable achievements</button>
 
     </div>
 
@@ -36,10 +36,9 @@
 <script>
 
 
-    async function callContract() {
-        console.log("Test call NFT to contract")
-        const res = await endpoints.testNftEndpoint();
-        console.log("FE RES:", res);
+    async function enableAchievements() {
+        const res = await endpoints.enableAchievements(wallet.result.walletAddress);
+        console.log("Enabling Achievements", res);
 
     }
 
@@ -53,6 +52,7 @@
     const checkResult = document.getElementById("check-result");
     const allSubmissionIds = document.getElementById("all-submission-ids");
     const checkingNowLbl = document.getElementById("checking-now");
+    const enableAchievementsBtn = document.getElementById("enable-achievements");
 
     async function setup() {
         console.log("Start");
@@ -62,6 +62,7 @@
         if (!wallet.success) {
             submitBtn.disabled = true;
             checkBtn.disabled = true;
+            enableAchievementsBtn.disabled = true;
             throw new Error('Wallet Error');
         }
 
@@ -69,8 +70,8 @@
         submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
         console.log("subs data", submissionsData)
         if (!submissionsData.success) {
-            console.error("Could not get submission IDs");
-            alert("Could not get submission IDs");
+            console.error("Could not get submission IDs from the backend");
+            alert("Could not get submission IDs from the backend");
             return;
         }
 
@@ -78,7 +79,6 @@
             console.log(submissionsData.result.error);
             return;
         }
-
 
         submissionsData.result.forEach(subData => {
             var option = document.createElement("option");

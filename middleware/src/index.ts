@@ -17,7 +17,7 @@ import { gameBackendVersion, GAME_NAME } from '@game/utils';
 
 import { queryEndpoints } from './endpoints/queries';
 import { writeEndpoints } from './endpoints/write';
-import { testNftEndpoint } from './endpoints/nft';
+import { enableAchievements } from './endpoints/nft';
 
 initMiddlewareCore(GAME_NAME, gameBackendVersion);
 
@@ -25,7 +25,7 @@ const endpoints = {
   ...paimaEndpoints,
   ...queryEndpoints,
   ...writeEndpoints,
-  testNftEndpoint
+  enableAchievements
 };
 
 export * from './types';

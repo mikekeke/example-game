@@ -37,7 +37,7 @@
 					"error": {
 						"type": "string",
 						"enum": [
-							"Achievements not found"
+							"Failed to get achievements "
 						],
 						"nullable": false
 					}

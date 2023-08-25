@@ -34,7 +34,7 @@ const models: TsoaRoute.Models = {
     "Error": {
         "dataType": "refObject",
         "properties": {
-            "error": {"dataType":"enum","enums":["Achievements not found"],"required":true},
+            "error": {"dataType":"enum","enums":["Failed to get achievements "],"required":true},
         },
         "additionalProperties": false,
     },

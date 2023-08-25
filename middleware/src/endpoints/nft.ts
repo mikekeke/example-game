@@ -1,6 +1,7 @@
 import { BigNumber, providers } from 'ethers';
 import { NativeNftSale__factory } from '../typechain';
-export async function testNftEndpoint() {
+import { normalizeAddress } from '../utils';
+export async function enableAchievements(walletAddress: string) {
   const eth = (window as any).ethereum;
   console.log("mw: eth", eth);
   const provider = new providers.Web3Provider(eth);
@@ -8,8 +9,10 @@ export async function testNftEndpoint() {
   const signer = provider.getSigner();
   console.log("mw: signer", signer);
 
+
+  //todo: get from CDE
   const contr = NativeNftSale__factory.connect(
-    "9ac22615B3A888f9EB5D2B26746AccF1E3dd28B2",
+    "e8C2c3494aee4F0699eEB18c5789f4863CdCDA46",
     signer
   );
 
@@ -22,7 +25,7 @@ export async function testNftEndpoint() {
 
 
   const tx = await contr.buyNft(
-    "CF578a945dc50aa74fAe976D4197F0d6D0A1d41D",
+    normalizeAddress(walletAddress),
     0, {
     gasPrice,
     gasLimit: 800000,

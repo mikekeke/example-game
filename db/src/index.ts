@@ -6,3 +6,4 @@ import type Pool from 'pg';
 import { creds, requirePool } from './pgPool.js';
 export { requirePool, creds };
 export type { Pool };
+export * from './helpers.js';

@@ -75,11 +75,40 @@ dc18907660410084b16f4a960f283491859bf48995f5c1bd7201383bb723ee56
 docker rm generic-postgres && docker volume rm docker_example-game-00-db
 ```
 
-## Fresh deploy
+## Fresh deploy to Ganache
 
 ### L2 contract
-- `cd contracts/paima-l2-contract/`
+
+- `cd contracts/paima-l2-contract`
+- nvm use 16.20.0
+- npm i
+- add Ganache settings to `contracts/nft/truffle-config.js`
 - set owner in `contracts/paima-l2-contract/truffle-config.js` (pub key hash w/o `0x`)
 - `export PRIVATE_KEY=...`
 - `npx truffle migrate --network ganache``
 - get contract address and put in `.env.development
+
+### NFT
+
+- `cd contracts/nft`
+- nvm use 16.20.0
+- npm i
+- edit `enum NftType` in `contracts/nft/src/NftType.sol`
+- edit mapper in `contracts/nft/src/NftTypeMapper.sol`
+- set owner in `contracts/nft/deploy-config.json` (pub key hash w/o `0x`)
+- add Ganache settings to `contracts/nft/deploy.sh` and `contracts/nft/truffle-config.js`
+- `export PRIVATE_KEY=...`
+- exec `contracts/nft/deploy.sh` to deploy `Paima ERC721`
+  - put output as CDE to `extensions.yml`
+- exec `contracts/nft/deploy.sh` to deploy `NativeNftSale`
+  - `NativeProxy` can be used now to call NFT sale endpoints to buy NFTs
+- TODO: copy abi ang generate TS modules
+
+
+## Current deployed stuff
+
+```
+Deployed contract addresses:
+   NativeNftSale: 0x1531249D49927a448aA0338AD694B524708d0928
+   NativeProxy:   0xe8C2c3494aee4F0699eEB18c5789f4863CdCDA46
+```

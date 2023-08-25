@@ -4,9 +4,9 @@ import { buildBackendQuery, PaimaMiddlewareErrorCode } from 'paima-sdk/paima-mw-
 import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
 import type { RoundExecutor } from '../types';
 import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@game/game-logic';
-import { IGetSubmissionResult } from '@game/db';
 import Prando from 'paima-sdk/paima-prando';
 import { Achievements } from '@game/utils';
+import { IGetSubmissionResult } from '@game/db';
 
 export const queryEndpoints = {
   getRoundExecutor,
