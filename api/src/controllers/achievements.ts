@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Route, } from 'tsoa';
 import { ISubmissionDataResult, submissionData, requirePool } from '@game/db';
-import { Achievements, AchievementsRepo, DummyAchievements } from '@game/utils';
+import { Achievements, getAchievements } from '@game/utils';
 
 type Response = Achievements | Error;
 
@@ -12,10 +12,9 @@ interface Error {
 export class AchievementController extends Controller {
   @Get()
   public async get(@Query() wallet_address: string): Promise<Response> {
-    return initRepo().getAchievements(wallet_address);
+    // const pool = requirePool();
+    // const res = await getAchievements(wallet_address, pool);
+    return {error: 'Achievements not found'};
   }
 }
 
-function initRepo(): AchievementsRepo  {
-  return new DummyAchievements();
-}

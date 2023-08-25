@@ -2,6 +2,7 @@ import { SQLUpdate } from "paima-sdk/paima-db";
 import { AchievementNftMint } from "./types";
 import { IInitAchievementsParams, IGetAchievementsByOwnedResult, initAchievements, winsCount } from "@game/db";
 import type { Pool } from 'pg';
+import { Achievements } from "@game/utils";
 
 export function initAchievementsQuery(input: AchievementNftMint): SQLUpdate {
   const params: IInitAchievementsParams = {
@@ -12,7 +13,7 @@ export function initAchievementsQuery(input: AchievementNftMint): SQLUpdate {
 }
 
 export async function updateAchievements(
-  achResult: IGetAchievementsByOwnedResult,
+  achResult: Achievements,
   walletAddress: string,
   dbConn: Pool
 ): Promise<SQLUpdate[]> {

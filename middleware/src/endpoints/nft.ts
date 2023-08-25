@@ -8,8 +8,9 @@ export async function testNftEndpoint() {
   const signer = provider.getSigner();
   console.log("mw: signer", signer);
 
+  //todo: get from env?
   const contr = NativeNftSale__factory.connect(
-    "9ac22615B3A888f9EB5D2B26746AccF1E3dd28B2",
+    "e8C2c3494aee4F0699eEB18c5789f4863CdCDA46",
     signer
   );
 
