@@ -70,3 +70,16 @@ Deployed contract addresses:
 ```
 dc18907660410084b16f4a960f283491859bf48995f5c1bd7201383bb723ee56
 ```
+
+```
+docker rm generic-postgres && docker volume rm docker_example-game-00-db
+```
+
+## Fresh deploy
+
+### L2 contract
+- `cd contracts/paima-l2-contract/`
+- set owner in `contracts/paima-l2-contract/truffle-config.js` (pub key hash w/o `0x`)
+- `export PRIVATE_KEY=...`
+- `npx truffle migrate --network ganache``
+- get contract address and put in `.env.development

@@ -4,8 +4,7 @@ import { AchievementNftMint, ScheduledDataInput, isAchievementNft } from './type
 describe('Input parsing', () => {
 
   test('parses submitGuess', () => {
-    //todo: remove normalization, it works as is looks like
-    const parsed = parse('s|*cf578a945dc50aa74fae976d4197f0d6d0a1d41d|A|01');
+    const parsed = parse('s|*0xcf578a945dc50aa74fae976d4197f0d6d0a1d41d|A|01');
     console.log("parsed submitGuess", parsed)
     expect(parsed.input).toBe('submitGuess');
   });

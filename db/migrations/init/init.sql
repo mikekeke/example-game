@@ -6,3 +6,9 @@ CREATE TABLE submissions (
   is_success BOOLEAN NOT NULL,
   PRIMARY KEY (submission_id, wallet_address)
 );
+
+CREATE TABLE achievements (
+  nft_id TEXT PRIMARY KEY,
+  contract_address TEXT NOT NULL,
+  achievements TEXT [] default array[]::text[] NOT NULL
+);

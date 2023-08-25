@@ -67,10 +67,19 @@
 
         // Previous submissions data for UI
         submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
+        console.log("subs data", submissionsData)
         if (!submissionsData.success) {
             console.error("Could not get submission IDs");
             alert("Could not get submission IDs");
+            return;
         }
+
+        if (submissionsData.result.error) {
+            console.log(submissionsData.result.error);
+            return;
+        }
+
+
         submissionsData.result.forEach(subData => {
             var option = document.createElement("option");
             option.text = "#" + subData.submission_id + " " + subData.symbols;
@@ -131,6 +140,27 @@
 
             checkResult.appendChild(p);
             await new Promise(r => setTimeout(r, 500));
+        }
+        if (roundEx.currentState.isGoodSoFar) {
+            var final = document.createElement("p");
+            final.innerHTML = "Final result: ✅"
+            checkResult.appendChild(final);
+        } else {
+            if (roundEx.currentState.symbolsLeft.length > 0) {
+                var symbolsLeft = document.createElement("p");
+                symbolsLeft.innerHTML = "Symbols left: " + roundEx.currentState.symbolsLeft
+                checkResult.appendChild(symbolsLeft);
+            }
+
+            if (roundEx.currentState.codesLeft.length > 0) {
+                var codesLeft = document.createElement("p");
+                codesLeft.innerHTML = "Codes left: " + roundEx.currentState.codesLeft
+                checkResult.appendChild(codesLeft);
+            }
+
+            var final = document.createElement("p");
+            final.innerHTML = "Final result: ❌"
+            checkResult.appendChild(final);
         }
     }
 

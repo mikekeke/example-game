@@ -39,3 +39,35 @@ const insertSubmissionIR: any = {"usedParamSet":{"wallet_address":true,"symbols"
 export const insertSubmission = new PreparedQuery<IInsertSubmissionParams,IInsertSubmissionResult>(insertSubmissionIR);
 
 
+/** 'InitAchievements' parameters type */
+export interface IInitAchievementsParams {
+  contract_address: string;
+  nft_id: string;
+}
+
+/** 'InitAchievements' return type */
+export type IInitAchievementsResult = void;
+
+/** 'InitAchievements' query type */
+export interface IInitAchievementsQuery {
+  params: IInitAchievementsParams;
+  result: IInitAchievementsResult;
+}
+
+const initAchievementsIR: any = {"usedParamSet":{"contract_address":true,"nft_id":true},"params":[{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":69,"b":86}]},{"name":"nft_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":91,"b":98}]}],"statement":"INSERT INTO achievements (\n  contract_address,\n  nft_id\n) VALUES (\n  :contract_address!,\n  :nft_id!\n)"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * INSERT INTO achievements (
+ *   contract_address,
+ *   nft_id
+ * ) VALUES (
+ *   :contract_address!,
+ *   :nft_id!
+ * )
+ * ```
+ */
+export const initAchievements = new PreparedQuery<IInitAchievementsParams,IInitAchievementsResult>(initAchievementsIR);
+
+

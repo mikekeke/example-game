@@ -1,6 +1,8 @@
 /** Types generated for queries found in "src/queries/select.sql" */
 import { PreparedQuery } from '@pgtyped/query';
 
+export type stringArray = (string)[];
+
 /** 'GetSubmission' parameters type */
 export interface IGetSubmissionParams {
   submission_id: number | null | void;
@@ -70,5 +72,66 @@ const submissionDataIR: any = {"usedParamSet":{"wallet_address":true},"params":[
  * ```
  */
 export const submissionData = new PreparedQuery<ISubmissionDataParams,ISubmissionDataResult>(submissionDataIR);
+
+
+/** 'GetAchievementsByOwned' parameters type */
+export interface IGetAchievementsByOwnedParams {
+  nft_ids: readonly (string | null | void)[];
+}
+
+/** 'GetAchievementsByOwned' return type */
+export interface IGetAchievementsByOwnedResult {
+  achievements: stringArray;
+  contract_address: string;
+  nft_id: string;
+}
+
+/** 'GetAchievementsByOwned' query type */
+export interface IGetAchievementsByOwnedQuery {
+  params: IGetAchievementsByOwnedParams;
+  result: IGetAchievementsByOwnedResult;
+}
+
+const getAchievementsByOwnedIR: any = {"usedParamSet":{"nft_ids":true},"params":[{"name":"nft_ids","required":false,"transform":{"type":"array_spread"},"locs":[{"a":43,"b":50}]}],"statement":"select * from achievements\nwhere nft_id in :nft_ids"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * select * from achievements
+ * where nft_id in :nft_ids
+ * ```
+ */
+export const getAchievementsByOwned = new PreparedQuery<IGetAchievementsByOwnedParams,IGetAchievementsByOwnedResult>(getAchievementsByOwnedIR);
+
+
+/** 'WinsCount' parameters type */
+export interface IWinsCountParams {
+  wallet_address: string | null | void;
+}
+
+/** 'WinsCount' return type */
+export interface IWinsCountResult {
+  count: string | null;
+}
+
+/** 'WinsCount' query type */
+export interface IWinsCountQuery {
+  params: IWinsCountParams;
+  result: IWinsCountResult;
+}
+
+const winsCountIR: any = {"usedParamSet":{"wallet_address":true},"params":[{"name":"wallet_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":56,"b":70}]}],"statement":"select count(*)\nfrom submissions\nwhere\nwallet_address = :wallet_address\nand is_success is TRUE"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * select count(*)
+ * from submissions
+ * where
+ * wallet_address = :wallet_address
+ * and is_success is TRUE
+ * ```
+ */
+export const winsCount = new PreparedQuery<IWinsCountParams,IWinsCountResult>(winsCountIR);
 
 

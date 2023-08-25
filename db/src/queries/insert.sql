@@ -12,3 +12,14 @@ INSERT INTO submissions (
   :guess!,
   :is_success!
 );
+
+/* 
+  @name init_achievements
+*/
+INSERT INTO achievements (
+  contract_address,
+  nft_id
+) VALUES (
+  :contract_address!,
+  :nft_id!
+);

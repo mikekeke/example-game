@@ -1,12 +1,11 @@
-import type { FailedResult, Result } from 'paima-sdk/paima-mw-core';
+import type { Result } from 'paima-sdk/paima-mw-core';
 import { buildBackendQuery, PaimaMiddlewareErrorCode } from 'paima-sdk/paima-mw-core';
 
 import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
 import type { RoundExecutor } from '../types';
 import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@game/game-logic';
-import { ISubmissionDataResult, IGetSubmissionResult } from '@game/db';
+import { IGetSubmissionResult } from '@game/db';
 import Prando from 'paima-sdk/paima-prando';
-import { normalizeAddress } from '../utils';
 import { Achievements } from '@game/utils';
 
 export const queryEndpoints = {
@@ -20,12 +19,11 @@ async function getRoundExecutor(
   submissionId: number
 ): Promise<Result<RoundExecutor<MatchState, TickEvent>>> {
   const errorFxn = buildEndpointErrorFxn('getRoundExecutor');
-  const address = normalizeAddress(walletAddress);
 
   const query = buildBackendQuery(
     'user_submission',
     {
-      wallet_address: address,
+      wallet_address: walletAddress,
       submission_id: submissionId
     });
 
@@ -50,10 +48,9 @@ export interface SubmissionData {
 }
 
 async function getSubmissionsData(walletAddress: string): Promise<Result<SubmissionData[]>> {
-  const address = normalizeAddress(walletAddress);
   const query = buildBackendQuery(
     'submissions_data',
-    { wallet_address: address });
+    { wallet_address: walletAddress });
 
   const data: Result<SubmissionData[]> =
     await getData('getSubmissionsData', query);

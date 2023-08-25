@@ -18,3 +18,20 @@ from submissions
 where
 submissions.wallet_address = :wallet_address
 order by (submission_id) desc;
+
+
+/* 
+  @name get_achievements_by_owned
+  @param nft_ids -> (...)
+*/
+select * from achievements
+where nft_id in :nft_ids;
+
+/*
+ @name wins_count
+*/
+select count(*)
+from submissions
+where
+wallet_address = :wallet_address
+and is_success is TRUE;
