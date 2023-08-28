@@ -103,10 +103,7 @@ async function initAchievement(
     return [];
   }
 
-  const gamesPlayed = await getSubmissions.run(
-    { wallet_address: walletAddress },
-    dbConn
-  ).then(submissions => submissions.length);
+  
 
-  return initAchievementsQuery(input, gamesPlayed);
+  return initAchievementsQuery(input, walletAddress, dbConn);
 }

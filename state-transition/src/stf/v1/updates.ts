@@ -8,24 +8,39 @@ import {
   getSubmissions,
   updateAchievements,
   getAchievements,
-  IUpdateAchievementsParams
+  IUpdateAchievementsParams,
+  IGetSubmissionsResult
 } from "@game/db";
 import type { Pool } from 'pg';
 import { MatchState } from "@game/game-logic";
 import { AchievementsRecord } from "@game/utils";
 import { getNftOwner } from "paima-sdk/paima-utils-backend";
 
-export function initAchievementsQuery(
+export async function initAchievementsQuery(
   input: AchievementNftMint,
-  gamesPlayed: number
-): SQLUpdate[] {
+  walletAddress: string,
+  dbConn: Pool
+): Promise<SQLUpdate[]> {
 
-  const record: AchievementsRecord = { gamesPlayed: gamesPlayed };
+  const submissions = await getSubmissions.run(
+    { wallet_address: walletAddress },
+    dbConn
+  );
+
+  const record: AchievementsRecord =
+  {
+    gamesPlayed: submissions.length,
+    winStreak: longestWinStreak(submissions.map(s => s.is_success))
+  };
+
   const initParams: IInitAchievementsParams = {
     contract_address: input.address,
     nft_id: input.tokenId,
     record: JSON.stringify(record)
   };
+
+
+
 
   console.log("Init AchNFT", initParams);
 
@@ -51,10 +66,25 @@ export async function updateAchievementsRecord(
 
   const achievementsRecord = tryParseRecord(achievements.record);
   if (!achievementsRecord) {
+    console.error("Could not prase achievements record received from DB", achievements);
     return [];
   }
+
+  const outcomes = await getSubmissions.run(
+    { wallet_address: walletAddress },
+    dbConn
+  ).then(r => r.map(s => s.is_success));
+  console.log("before push", outcomes);
+  outcomes.push(currentSubmissionState.isGoodSoFar);
+  console.log("after push", outcomes);
+
+  let winStreak = longestWinStreak(outcomes);
+  console.log("winStreak", winStreak)
+
+
   const newRecord: AchievementsRecord = {
-    gamesPlayed: 1 + achievementsRecord.gamesPlayed
+    gamesPlayed: 1 + achievementsRecord.gamesPlayed,
+    winStreak: winStreak
   };
   const updateParams: IUpdateAchievementsParams = {
     nft_id: achievements.nft_id,
@@ -74,4 +104,14 @@ function tryParseRecord(record: string): AchievementsRecord | null {
     console.error("Error parsing AchievementsRecord:", e);
     return null;
   }
+}
+
+function longestWinStreak(outcomes: boolean[]): number {
+  let maxStreak = 0;
+  let currentStreak = 0;
+  outcomes.forEach(is_success => {
+    currentStreak = is_success ? currentStreak + 1 : 0;
+    maxStreak = Math.max(maxStreak, currentStreak);
+  })
+  return maxStreak;
 }

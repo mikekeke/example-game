@@ -172,10 +172,15 @@
 
     function displayAchievements(achievements) {
         console.log("Achievements: ", achievements);
-        const record = JSON.parse(achievements.record);
+        const record = achievements.record;
         console.log("Record:", record);
         var gamesPlayed = pWithText("Games played: " + record.gamesPlayed);
         achievementsDiv.appendChild(gamesPlayed);
+
+        var winStreak = pWithText("Longest win streak: " + record.winStreak);
+        achievementsDiv.appendChild(winStreak);
+
+
         
     }
 

@@ -23,7 +23,7 @@ export class AchievementController extends Controller {
     return {
       contractAddress: result.contract_address,
       nftId: result.nft_id,
-      record: result.record
+      record: JSON.parse(result.record)
     };
   }
 }
