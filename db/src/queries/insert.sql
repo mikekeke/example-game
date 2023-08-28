@@ -18,8 +18,11 @@ INSERT INTO submissions (
 */
 INSERT INTO achievements (
   contract_address,
-  nft_id
+  nft_id,
+  record
 ) VALUES (
   :contract_address!,
-  :nft_id!
+  :nft_id!,
+  :record!
 );
+

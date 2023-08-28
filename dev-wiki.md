@@ -85,16 +85,18 @@ docker rm generic-postgres && docker volume rm docker_example-game-00-db
 - add Ganache settings to `contracts/nft/truffle-config.js`
 - set owner in `contracts/paima-l2-contract/truffle-config.js` (pub key hash w/o `0x`)
 - `export PRIVATE_KEY=...`
-- `npx truffle migrate --network ganache``
-- get contract address and put in `.env.development
+- `npx truffle migrate --network ganache`
+- get contract address and put in `.env.development.CONTRACT_ADDRESS`
 
 ### NFT
+
+TODO: make a note: Maybe this is some common knowledge, but despite of using address of  `NativeProxy` contract to mint NFT from TypeScript code in the `middleware`, existing example and I am as well use abi of `NativeNftSale` in TypeScript code to call buy endpoint, coz after generating modules with `typechain`, there is no endpoints like `nftAddress` or `nftPrice` or `buyNft` in factory, that was generated from `NativeProxy` abi.
 
 - `cd contracts/nft`
 - nvm use 16.20.0
 - npm i
-- edit `enum NftType` in `contracts/nft/src/NftType.sol`
-- edit mapper in `contracts/nft/src/NftTypeMapper.sol`
+- *if required*, edit `enum NftType` in `contracts/nft/src/NftType.sol`
+- *if required*, edit mapper in `contracts/nft/src/NftTypeMapper.sol`
 - set owner in `contracts/nft/deploy-config.json` (pub key hash w/o `0x`)
 - add Ganache settings to `contracts/nft/deploy.sh` and `contracts/nft/truffle-config.js`
 - `export PRIVATE_KEY=...`
@@ -102,15 +104,27 @@ docker rm generic-postgres && docker volume rm docker_example-game-00-db
   - put output as CDE to `extensions.yml`
 - exec `contracts/nft/deploy.sh` to deploy `NativeNftSale`
   - `NativeProxy` can be used now to call NFT sale endpoints to buy NFTs
-- TODO: copy abi ang generate TS modules
+  - make a note with terminal output, should be something like
+    ```
+    Deployed contract addresses:
+      NativeNftSale: 0x62369d389dD061b54D5D875FE92e431dFfA3ECa2
+      NativeProxy:   0x4CE0d6e6a7DC1a975b84DB104931Fe58D51A3eD3
+      ```
+- (just it case) in `contracts/nft` run `npm run compile`
+- grab required `abis` from `contracts/nft/build` and put them in `example-game/middleware/abis`
+  - in the current case for the `middleware` endpoint `NativeNftSale.json` is required to mint achievement NFT - put it in `example-game/middleware/abis`
+- `cd` to `example-game/middleware` and `npm run gen-abi-types`
+- TODO: put address of `NativeProxy` to contract call settings (now hardcoded)
+
+TODO: make a note, that it is probably possible to call mint directly, w/o using NFT sale contract, but I decided to go this way for extra safety, as official docs suggest to deploy and use it, and code examples use it as well. 
 
 
 ## Current deployed stuff
 
 ```
 Deployed contract addresses:
-   NativeNftSale: 0xB7093F0d2b39821aFe7D525Eb46CA5cf04d5a1a4
-   NativeProxy:   0x4F04B4A9964e45A9226564479448B4e4F0b33398
+   NativeNftSale: 0x62369d389dD061b54D5D875FE92e431dFfA3ECa2
+   NativeProxy:   0x4CE0d6e6a7DC1a975b84DB104931Fe58D51A3eD3
 ```
 
 ## Achievements

@@ -43,6 +43,7 @@ export const insertSubmission = new PreparedQuery<IInsertSubmissionParams,IInser
 export interface IInitAchievementsParams {
   contract_address: string;
   nft_id: string;
+  record: string;
 }
 
 /** 'InitAchievements' return type */
@@ -54,17 +55,19 @@ export interface IInitAchievementsQuery {
   result: IInitAchievementsResult;
 }
 
-const initAchievementsIR: any = {"usedParamSet":{"contract_address":true,"nft_id":true},"params":[{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":69,"b":86}]},{"name":"nft_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":91,"b":98}]}],"statement":"INSERT INTO achievements (\n  contract_address,\n  nft_id\n) VALUES (\n  :contract_address!,\n  :nft_id!\n)"};
+const initAchievementsIR: any = {"usedParamSet":{"contract_address":true,"nft_id":true,"record":true},"params":[{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":79,"b":96}]},{"name":"nft_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":101,"b":108}]},{"name":"record","required":true,"transform":{"type":"scalar"},"locs":[{"a":113,"b":120}]}],"statement":"INSERT INTO achievements (\n  contract_address,\n  nft_id,\n  record\n) VALUES (\n  :contract_address!,\n  :nft_id!,\n  :record!\n)"};
 
 /**
  * Query generated from SQL:
  * ```
  * INSERT INTO achievements (
  *   contract_address,
- *   nft_id
+ *   nft_id,
+ *   record
  * ) VALUES (
  *   :contract_address!,
- *   :nft_id!
+ *   :nft_id!,
+ *   :record!
  * )
  * ```
  */

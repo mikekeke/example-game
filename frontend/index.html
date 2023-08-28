@@ -9,8 +9,8 @@
 <body>
     <div>
         <h2>Achievements</h2>
-        <pre id="achievements"></pre>
-        <button onclick="enableAchievements()" id="enable-achievements">Enable achievements</button>
+        <div id="achievements"></div>
+        <button onclick="enableAchievements()" id="enable-achievements">Activate achievements</button>
 
     </div>
 
@@ -54,7 +54,7 @@
     const allSubmissionIds = document.getElementById("all-submission-ids");
     const checkingNowLbl = document.getElementById("checking-now");
     const enableAchievementsBtn = document.getElementById("enable-achievements");
-    const achievementsPre = document.getElementById("achievements");
+    const achievementsDiv = document.getElementById("achievements");
 
     async function setup() {
         console.log("Start");
@@ -89,10 +89,11 @@
         });
 
         //Achievements data for UI
-        const achs = await endpoints.getAchievements(wallet.result.walletAddress);
-        if (achs) {
+        const achsResult = await endpoints.getAchievements(wallet.result.walletAddress);
+        console.log("achsResult:", achsResult)
+        if (achsResult && !achsResult.result.error) {
             enableAchievementsBtn.style.display = 'none';
-            achievementsPre.textContent = JSON.stringify(achs, undefined, 2);
+            displayAchievements(achsResult.result)
         }
     }
 
@@ -167,6 +168,22 @@
             final.innerHTML = "Final result: ❌"
             checkResult.appendChild(final);
         }
+    }
+
+    function displayAchievements(achievements) {
+        console.log("Achievements: ", achievements);
+        const record = JSON.parse(achievements.record);
+        console.log("Record:", record);
+        var gamesPlayed = pWithText("Games played: " + record.gamesPlayed);
+        achievementsDiv.appendChild(gamesPlayed);
+        
+    }
+
+    function pWithText(text) {
+        var p = document.createElement("p");
+        p.innerHTML = text;
+        return p;
+
     }
 
     setup().then(r => r);

@@ -12,25 +12,24 @@ export async function enableAchievements(walletAddress: string) {
 
   //todo: better way to put hardcoded hex
   const contr = NativeNftSale__factory.connect(
-    "4F04B4A9964e45A9226564479448B4e4F0b33398",
+    "4CE0d6e6a7DC1a975b84DB104931Fe58D51A3eD3",
     signer
   );
 
   const addr = await contr.nftAddress();
   console.log("mw: nft address", addr);
 
-
   const tokenPrice = await contr.nftPrice();
   const gasPrice = await provider.getGasPrice();
 
-
   const tx = await contr.buyNft(
     normalizeAddress(walletAddress),
-    0, {
-    gasPrice,
-    gasLimit: 800000,
-    value: tokenPrice.toString(),
-  });
+    0, // for achievement there is only one type of NFT mapping, so index now is always 0
+    {
+      gasPrice,
+      gasLimit: 800000,
+      value: tokenPrice.toString(),
+    });
 
 
   let res = await tx.wait(1);

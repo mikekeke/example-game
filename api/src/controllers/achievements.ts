@@ -17,13 +17,13 @@ export class AchievementController extends Controller {
     const result = await getAchievements(wallet_address, pool);
 
     if (!result) {
-      return { error: "Achievements not found" }
+      return { error: 'Achievements not found' }
     };
-    
+
     return {
       contractAddress: result.contract_address,
       nftId: result.nft_id,
-      achievements: result.achievements
+      record: result.record
     };
   }
 }

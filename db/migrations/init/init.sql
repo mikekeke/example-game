@@ -10,5 +10,5 @@ CREATE TABLE submissions (
 CREATE TABLE achievements (
   nft_id TEXT PRIMARY KEY,
   contract_address TEXT NOT NULL,
-  achievements TEXT [] default array[]::text[] NOT NULL
+  record TEXT NOT NULL
 );

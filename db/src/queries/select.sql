@@ -9,6 +9,15 @@ submissions.wallet_address = :wallet_address
 and submissions.submission_id = :submission_id;
 
 /* 
+  @name get_submissions
+*/
+select 
+*
+from submissions
+where 
+submissions.wallet_address = :wallet_address;
+
+/* 
   @name submission_data
 */
 select 

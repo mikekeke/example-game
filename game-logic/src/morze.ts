@@ -1,6 +1,7 @@
 import { fromOnChainRepr } from '@game/utils';
 
-// Taken from https://github.com/mvukic/morse-code/blob/master/src/data/alphabet.ts
+// Partially taken from https://github.com/mvukic/morse-code/blob/master/src/data/alphabet.ts
+// (number were wrong there)
 const lettersAndCodes: [string, string][] = [
   ['A', '.-'],
   ['B', '-...'],
@@ -30,35 +31,14 @@ const lettersAndCodes: [string, string][] = [
   ['Z', '--..'],
   ['0', '-----'],
   ['1', '.----'],
-  ['2', '.---'],
+  ['2', '..---'],
   ['3', '...--'],
   ['4', '....-'],
   ['5', '.....'],
-  ['6', '.----'],
-  ['7', '..---'],
-  ['8', '...--'],
-  ['9', '....-'],
-  ['.', '.-.-.-'],
-  [',', '--..--'],
-  ['?', '..--..'],
-  ['\'', '.----.'],
-  ['!', '-.-.--'],
-  ['/', '-..-.'],
-  ['(', '-.--.'],
-  [')', '-.--.-'],
-  ['&', '.-...'],
-  [':', '---...'],
-  [';', '-.-.-.'],
-  ['=', '-...-'],
-  ['+', '-.-.-'],
-  ['-', '-....-'],
-  ['_', '..--.-'],
-  ['\"', '.-..-.'],
-  ['$', '...-..-'],
-  ['@', '.--.-.'],
-  [' ', ' '],
-  ['\n', '\n'],
-  ['\n\r', '\n\r'],
+  ['6', '-....'],
+  ['7', '--...'],
+  ['8', '---..'],
+  ['9', '----.'],
 ];
 
 const letterToCodeMap: Map<string, string> = new Map(lettersAndCodes);

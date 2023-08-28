@@ -28,8 +28,9 @@ export interface AchievementNftMint extends ScheduledDataInput {
   type: NftType;
 }
 
-export const characters = ['fire', 'water'] as const;
-export type NftType = typeof characters[number];
+// Only one type here - all achievements are stored under single stateful NFT
+export const achievementTypes = ['achievement'] as const;
+export type NftType = typeof achievementTypes[number];
 
 export function isAchievementNft(input: ScheduledDataInput): input is AchievementNftMint {
   return (input as AchievementNftMint).effect === 'achievementNftMint';

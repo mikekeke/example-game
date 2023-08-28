@@ -1,5 +1,5 @@
 import { PaimaParser, ParserRecord } from 'paima-sdk/paima-utils-backend';
-import { characters, type AchievementNftMint, type ParsedSubmittedInput } from './types';
+import { achievementTypes, type AchievementNftMint, type ParsedSubmittedInput } from './types';
 
 const myGrammar = `
         submitGuess      = s|*address|symbols|guess
@@ -11,7 +11,7 @@ const nftMint: ParserRecord<AchievementNftMint> = {
   effect: 'achievementNftMint', //todo: how to avoid literals copy-paste here?
   address: PaimaParser.WalletAddress(),
   tokenId: PaimaParser.NumberParser(),
-  type: PaimaParser.EnumParser(characters),
+  type: PaimaParser.EnumParser(achievementTypes),
 };
 
 const parserCommands = {

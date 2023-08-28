@@ -1,8 +1,6 @@
 /** Types generated for queries found in "src/queries/select.sql" */
 import { PreparedQuery } from '@pgtyped/query';
 
-export type stringArray = (string)[];
-
 /** 'GetSubmission' parameters type */
 export interface IGetSubmissionParams {
   submission_id: number | null | void;
@@ -38,6 +36,41 @@ const getSubmissionIR: any = {"usedParamSet":{"wallet_address":true,"submission_
  * ```
  */
 export const getSubmission = new PreparedQuery<IGetSubmissionParams,IGetSubmissionResult>(getSubmissionIR);
+
+
+/** 'GetSubmissions' parameters type */
+export interface IGetSubmissionsParams {
+  wallet_address: string | null | void;
+}
+
+/** 'GetSubmissions' return type */
+export interface IGetSubmissionsResult {
+  guess: string;
+  is_success: boolean;
+  submission_id: number;
+  symbols: string;
+  wallet_address: string;
+}
+
+/** 'GetSubmissions' query type */
+export interface IGetSubmissionsQuery {
+  params: IGetSubmissionsParams;
+  result: IGetSubmissionsResult;
+}
+
+const getSubmissionsIR: any = {"usedParamSet":{"wallet_address":true},"params":[{"name":"wallet_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":63,"b":77}]}],"statement":"select \n*\nfrom submissions\nwhere \nsubmissions.wallet_address = :wallet_address"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * select 
+ * *
+ * from submissions
+ * where 
+ * submissions.wallet_address = :wallet_address
+ * ```
+ */
+export const getSubmissions = new PreparedQuery<IGetSubmissionsParams,IGetSubmissionsResult>(getSubmissionsIR);
 
 
 /** 'SubmissionData' parameters type */
@@ -81,9 +114,9 @@ export interface IGetAchievementsByOwnedParams {
 
 /** 'GetAchievementsByOwned' return type */
 export interface IGetAchievementsByOwnedResult {
-  achievements: stringArray;
   contract_address: string;
   nft_id: string;
+  record: string;
 }
 
 /** 'GetAchievementsByOwned' query type */
