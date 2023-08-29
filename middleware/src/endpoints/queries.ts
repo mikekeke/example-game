@@ -1,6 +1,5 @@
 import type { Result } from 'paima-sdk/paima-mw-core';
 import { buildBackendQuery, PaimaMiddlewareErrorCode } from 'paima-sdk/paima-mw-core';
-
 import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
 import type { RoundExecutor } from '../types';
 import { initRoundExecutor, MatchMove, type MatchState, type TickEvent } from '@game/game-logic';
@@ -14,6 +13,8 @@ export const queryEndpoints = {
   getAchievements,
 };
 
+// There is actually function `getActiveAddress()` available in Paima SDK
+// but it was decided to pass address to endpoint from frontend
 async function getRoundExecutor(
   walletAddress: string,
   submissionId: number
@@ -32,7 +33,7 @@ async function getRoundExecutor(
   if (!data.success) return data;
 
   try {
-    const executor = buildRoundExecutor(data.result, 1);
+    const executor = buildRoundExecutor(data.result);
     return {
       success: true,
       result: executor,
@@ -57,7 +58,6 @@ async function getSubmissionsData(walletAddress: string): Promise<Result<Submiss
   return data;
 }
 
-
 async function getAchievements(walletAddress: string): Promise<Result<Achievements>> {
   const query = buildBackendQuery(
     'achievements',
@@ -70,8 +70,8 @@ async function getAchievements(walletAddress: string): Promise<Result<Achievemen
 
 function buildRoundExecutor(
   submission: IGetSubmissionResult,
-  round: number
 ): RoundExecutor<MatchState, TickEvent> {
+  // No randomness source is needed for the current game. Creating just some dummy here.
   const randomnessGenerator = new Prando(1);
   const userMove: MatchMove = MatchMove.fromData(submission.symbols, submission.guess);
   return initRoundExecutor(userMove, randomnessGenerator);

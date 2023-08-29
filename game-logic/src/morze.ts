@@ -43,11 +43,6 @@ const lettersAndCodes: [string, string][] = [
 
 const letterToCodeMap: Map<string, string> = new Map(lettersAndCodes);
 
-const codeToLetterMap: Map<string, string> = new Map(
-  // Switch key-value places
-  lettersAndCodes.map(([letter, code]) => [code, letter])
-);
-
 export function matchesCoding(symbol: string, code: string): boolean {
   const coding = getCoding(symbol);
   const result = coding === fromOnChainRepr(code);

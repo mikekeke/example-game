@@ -15,8 +15,8 @@ export interface InvalidInput {
   input: 'invalidString';
 }
 
-// NFT Mint
-// taken from https://github.com/PaimaStudios/paima-game-templates/blob/main/nft-lvlup/state-transition/src/stf/v1/types.ts
+// Stateful NFT scheduled input
+// template taken from https://github.com/PaimaStudios/paima-game-templates/blob/main/nft-lvlup/state-transition/src/stf/v1/types.ts
 export interface ScheduledDataInput {
   input: 'scheduledData';
 }

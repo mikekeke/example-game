@@ -42,7 +42,9 @@ export function getNextPair(state: MatchState): [string, string] | null {
 export class MatchMove {
   symbols: string;
   codes: string[];
-  round: number;
+  // This field is required for data that represents moves.
+  // It is always 1 in current example.
+  round: number; 
 
   private constructor(symbols: string, codes: string, round: number) {
     this.symbols = symbols;

@@ -2,6 +2,9 @@ import { providers } from 'ethers';
 import { NativeNftSale__factory } from '../typechain';
 import { normalizeAddress } from '../utils';
 
+// Mint stateful NFT to store achievements data
+// There is actually function `getActiveAddress()` available in Paima SDK
+// but it was decided to pass address to endpoint from frontend
 export async function enableAchievements(
   walletAddress: string,
   achievementsProxyContract: string // Address of `NativeProxy` should be passed here
