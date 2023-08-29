@@ -1,0 +1,74 @@
+{
+  "testnet": {
+    "Nft": {
+      "name": "Achievements NFT contract",
+      "symbol": "ACH",
+      "supply": 2000,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "minter": "",
+      "baseUri": ""
+    },
+    "NftSale": {
+      "price": 1
+    },
+    "NativeNftSale": {
+      "decimals": 18,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    },
+    "Erc20NftSale": {
+      "currencies": {
+        "USDT": "",
+        "USDC": ""
+      },
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    }
+  },
+  "mainnet": {
+    "Nft": {
+      "name": "Achievements NFT contract",
+      "symbol": "ACH",
+      "supply": 2000,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "minter": "",
+      "baseUri": ""
+    },
+    "NftSale": {
+      "price": 1
+    },
+    "NativeNftSale": {
+      "decimals": 18,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    },
+    "Erc20NftSale": {
+      "currencies": {
+        "USDT": "",
+        "USDC": ""
+      },
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    }
+  },
+  "ganache": {
+    "Nft": {
+      "name": "Achievements NFT contract",
+      "symbol": "ACH",
+      "supply": 2000,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "minter": "",
+      "baseUri": ""
+    },
+    "NftSale": {
+      "price": 1
+    },
+    "NativeNftSale": {
+      "decimals": 18,
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    },
+    "Erc20NftSale": {
+      "currencies": {
+        "USDT": "",
+        "USDC": ""
+      },
+      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+    }
+  }
+}
