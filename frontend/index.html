@@ -34,15 +34,8 @@
     </div>
 </body>
 <script src="./paimaMiddleware.js"></script>
+<script src="./config.js"></script>
 <script>
-
-
-    async function enableAchievements() {
-        const res = await endpoints.enableAchievements(wallet.result.walletAddress);
-        console.log("Enabling Achievements", res);
-
-    }
-
     let wallet;
     let submissionsData;
     const submitBtn = document.getElementById("submit-btn");
@@ -57,44 +50,23 @@
     const achievementsDiv = document.getElementById("achievements");
 
     async function setup() {
-        console.log("Start");
+        console.log("confing", config)
+        console.log("confing", config.achievementsProxyContract)
         wallet = await endpoints.userWalletLogin('metamask');
-        console.log("wallet", wallet);
-
         if (!wallet.success) {
             submitBtn.disabled = true;
             checkBtn.disabled = true;
             enableAchievementsBtn.disabled = true;
             throw new Error('Wallet Error');
         }
+        await setupSubmissions();
+        await setupAchievements();
+    }
 
-        // Previous submissions data for UI
-        submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
-        console.log("subs data", submissionsData)
-        if (!submissionsData.success) {
-            console.error("Could not get submission IDs from the backend");
-            alert("Could not get submission IDs from the backend");
-            return;
-        }
-
-        if (submissionsData.result.error) {
-            console.log(submissionsData.result.error);
-            return;
-        }
-
-        submissionsData.result.forEach(subData => {
-            var option = document.createElement("option");
-            option.text = "#" + subData.submission_id + " " + subData.symbols;
-            allSubmissionIds.add(option);
-        });
-
-        //Achievements data for UI
-        const achsResult = await endpoints.getAchievements(wallet.result.walletAddress);
-        console.log("achsResult:", achsResult)
-        if (achsResult && !achsResult.result.error) {
-            enableAchievementsBtn.style.display = 'none';
-            displayAchievements(achsResult.result)
-        }
+    async function enableAchievements() {
+        const res = await endpoints.enableAchievements(
+            wallet.result.walletAddress,
+            config.achievementsProxyContract);
     }
 
     async function submitGuess() {
@@ -137,58 +109,77 @@
         for (ticks = roundEx.tick(); ticks != null; ticks = roundEx.tick()) {
             let tick = ticks[0];
             console.log(tick);
-            var p = document.createElement("p");
-            p.innerHTML =
+            var p = pWithText(
                 (tick.isCorrect ? "✅" : "❌")
                 + "`" + tick.symbol + "`"
                 + " as "
-                + "`" + tick.morzeCode + "`";
+                + "`" + tick.morzeCode + "`"
+            );
 
             checkResult.appendChild(p);
             await new Promise(r => setTimeout(r, 500));
         }
         if (roundEx.currentState.isGoodSoFar) {
-            var final = document.createElement("p");
-            final.innerHTML = "Final result: ✅"
+            var final = pWithText("Final result: ✅");
             checkResult.appendChild(final);
         } else {
             if (roundEx.currentState.symbolsLeft.length > 0) {
-                var symbolsLeft = document.createElement("p");
-                symbolsLeft.innerHTML = "Symbols left: " + roundEx.currentState.symbolsLeft
+                var symbolsLeft = pWithText("Symbols left: " + roundEx.currentState.symbolsLeft);
                 checkResult.appendChild(symbolsLeft);
             }
 
             if (roundEx.currentState.codesLeft.length > 0) {
-                var codesLeft = document.createElement("p");
-                codesLeft.innerHTML = "Codes left: " + roundEx.currentState.codesLeft
+                var codesLeft = pWithText("Codes left: " + roundEx.currentState.codesLeft);
                 checkResult.appendChild(codesLeft);
             }
 
-            var final = document.createElement("p");
-            final.innerHTML = "Final result: ❌"
+            var final = pWithText("Final result: ❌");
             checkResult.appendChild(final);
         }
     }
 
-    function displayAchievements(achievements) {
-        console.log("Achievements: ", achievements);
-        const record = achievements.record;
-        console.log("Record:", record);
-        var gamesPlayed = pWithText("Games played: " + record.gamesPlayed);
-        achievementsDiv.appendChild(gamesPlayed);
-
-        var winStreak = pWithText("Longest win streak: " + record.winStreak);
-        achievementsDiv.appendChild(winStreak);
-
-
-        
+    async function setupAchievements() {
+        const achsResult = await endpoints.getAchievements(wallet.result.walletAddress);
+        console.log("achsResult:", achsResult)
+        if (achsResult && !achsResult.result.error) {
+            // enableAchievementsBtn.style.display = 'none';
+            console.debug("Achievements:", achsResult.result);
+            const record = achsResult.result.record;
+            console.debug("Record:", record);
+            var gamesPlayed = pWithText("Games played: " + record.gamesPlayed);
+            achievementsDiv.appendChild(gamesPlayed);
+            var winStreak = pWithText("Longest win streak: " + record.winStreak);
+            achievementsDiv.appendChild(winStreak);
+        } else {
+            console.warn("Could not get achievements:", achsResult);
+        }
     }
+
+    async function setupSubmissions() {
+        submissionsData = await endpoints.getSubmissionsData(wallet.result.walletAddress);
+        console.log("subs data", submissionsData)
+        if (!submissionsData.success) {
+            console.error("Could not get submission IDs from the backend");
+            alert("Could not get submission IDs from the backend");
+            return;
+        }
+
+        if (submissionsData.result.error) {
+            console.log(submissionsData.result.error);
+            return;
+        }
+
+        submissionsData.result.forEach(subData => {
+            var option = document.createElement("option");
+            option.text = "#" + subData.submission_id + " " + subData.symbols;
+            allSubmissionIds.add(option);
+        });
+    };
 
     function pWithText(text) {
         var p = document.createElement("p");
         p.innerHTML = text;
         return p;
-
     }
 
     setup().then(r => r);
