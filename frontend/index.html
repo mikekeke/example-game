@@ -142,7 +142,7 @@
         const achsResult = await endpoints.getAchievements(wallet.result.walletAddress);
         console.log("achsResult:", achsResult)
         if (achsResult && !achsResult.result.error) {
-            // enableAchievementsBtn.style.display = 'none';
+            enableAchievementsBtn.style.display = 'none';
             console.debug("Achievements:", achsResult.result);
             const record = achsResult.result.record;
             console.debug("Record:", record);
