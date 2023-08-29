@@ -4,7 +4,7 @@
       "name": "Achievements NFT contract",
       "symbol": "ACH",
       "supply": 2000,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df",
       "minter": "",
       "baseUri": ""
     },
@@ -13,14 +13,14 @@
     },
     "NativeNftSale": {
       "decimals": 18,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     },
     "Erc20NftSale": {
       "currencies": {
         "USDT": "",
         "USDC": ""
       },
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     }
   },
   "mainnet": {
@@ -28,7 +28,7 @@
       "name": "Achievements NFT contract",
       "symbol": "ACH",
       "supply": 2000,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df",
       "minter": "",
       "baseUri": ""
     },
@@ -37,14 +37,14 @@
     },
     "NativeNftSale": {
       "decimals": 18,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     },
     "Erc20NftSale": {
       "currencies": {
         "USDT": "",
         "USDC": ""
       },
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     }
   },
   "ganache": {
@@ -52,7 +52,7 @@
       "name": "Achievements NFT contract",
       "symbol": "ACH",
       "supply": 2000,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B",
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df",
       "minter": "",
       "baseUri": ""
     },
@@ -61,14 +61,14 @@
     },
     "NativeNftSale": {
       "decimals": 18,
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     },
     "Erc20NftSale": {
       "currencies": {
         "USDT": "",
         "USDC": ""
       },
-      "owner": "698D92351E3E25C398E682D2d98CAAdc09aB924B"
+      "owner": "49480F40Aee6795CA5B10c9Df93AdC238dFB97df"
     }
   }
 }
