@@ -135,3 +135,8 @@ There is no way to forbid suer to mint achievement NFT, e.g. by calling contract
 - even if state will be somehow created, SQL query always returns NFT single state for the NFT with lowest ID
 
 Mint inputs, though, will stay in L2 contract.
+
+
+```
+link art cousin prosper kiss blast glimpse cricket guide arrive dune cinnamon
+```
