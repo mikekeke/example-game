@@ -13,7 +13,6 @@ export async function getAchievements(
       achievementsCde,
       walletAddress).then(r => r.map((x) => x.toString()));
 
-  console.log("Owned NFTs", ownedNftIds)
   if (ownedNftIds.length == 0) {
     return undefined;
   }
