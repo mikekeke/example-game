@@ -1,3 +1,3 @@
 var config = {
-  achievementsProxyContract: "0x4CE0d6e6a7DC1a975b84DB104931Fe58D51A3eD3"
+  achievementsProxyContract: "0x893F44E6CB412C4f3598886BfFa825244391D4ff"
 }
