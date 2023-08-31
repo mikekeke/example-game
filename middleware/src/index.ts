@@ -18,6 +18,7 @@ import { gameBackendVersion, GAME_NAME } from '@game/utils';
 import { queryEndpoints } from './endpoints/queries';
 import { writeEndpoints } from './endpoints/write';
 import { enableAchievements } from './endpoints/nft';
+import { getPrettyCodes } from '@game/game-logic';
 
 initMiddlewareCore(GAME_NAME, gameBackendVersion);
 
@@ -40,6 +41,7 @@ export {
   updateBackendUri,
   getRemoteBackendVersion,
   postConciselyEncodedData,
+  getPrettyCodes,
 };
 
 export default endpoints;

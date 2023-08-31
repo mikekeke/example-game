@@ -129,7 +129,7 @@
             }
 
             if (roundEx.currentState.codesLeft.length > 0) {
-                var codesLeft = pWithText("Codes left: " + roundEx.currentState.codesLeft);
+                var codesLeft = pWithText("Codes left: " + getPrettyCodes(roundEx.currentState));
                 checkResult.appendChild(codesLeft);
             }
 

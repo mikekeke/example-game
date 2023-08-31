@@ -33,6 +33,10 @@ export interface MatchState {
   codesLeft: string[]
 }
 
+export function getPrettyCodes(state: MatchState): string[] {
+  return state.codesLeft.map(fromOnChainRepr);
+}
+
 export function getNextPair(state: MatchState): [string, string] | null {
   if (!state.symbolsLeft.length) return null;
   if (!state.codesLeft.length) return null;
@@ -55,5 +59,4 @@ export class MatchMove {
   public static fromData(symbols: string, codes: string): MatchMove {
     return new MatchMove(symbols, codes, 1);
   }
-
 };

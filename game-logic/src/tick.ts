@@ -10,7 +10,7 @@ import { matchesCoding } from './morze';
    corresponding code. Each such comparison is one tick.
    When next character or code can not be found in queue, then no more  events are
    emitted and round is considered finished.
-*/ 
+*/
 export function processTick(
   _matchEnvironment: MatchEnvironment, // No environment is needed for the current game.
   matchState: MatchState,
@@ -48,9 +48,15 @@ export function processTick(
 // Apply events to match state for the roundExecutor.
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 function applyEvents(matchState: MatchState, event: TickEvent): void {
-  matchState.isGoodSoFar =
-    (matchState.codesLeft.length === matchState.symbolsLeft.length)
-    && event.isCorrect;
   matchState.symbolsLeft = matchState.symbolsLeft.slice(1, matchState.symbolsLeft.length);
   matchState.codesLeft = matchState.codesLeft.slice(1, matchState.codesLeft.length);
+
+  /* We can detect difference in arrays lengths right away and mark result as bad ASAP,
+     but doing it this way, round executor will go through each awaitable pair to compare and
+     we can play nicer animation in the game UI
+  */
+  matchState.isGoodSoFar =
+    (matchState.codesLeft.length !== 0 && matchState.symbolsLeft.length !== 0)
+    && (matchState.symbolsLeft.length !== 0 && matchState.codesLeft.length !== 0)
+    && event.isCorrect;
 }
