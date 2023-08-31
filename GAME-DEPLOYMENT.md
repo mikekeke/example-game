@@ -1,6 +1,8 @@
 # Setup and start he project
 
 - [Setup and start he project](#setup-and-start-he-project)
+  - [MacOS specific](#macos-specific)
+  - [Demo](#demo)
   - [Step 1 - prepare root dir](#step-1---prepare-root-dir)
   - [Step 2 - initialization](#step-2---initialization)
   - [Step 3 - check packing](#step-3---check-packing)
@@ -25,6 +27,15 @@ Prerequisites:
 - Setup builds with node `16.20.0`. Later versions may  fail. The easiest way I've found is to install Node via `nvm` and then run `'nvm use 16.20.0'` where needed.
 - Setup requires `Metamask` wallet browser extension and EVM chain (does not use Paima `batcher`). [Ganache](https://trufflesuite.com/ganache/) is used in this guide as L1 EVM chain.
 
+## MacOS specific
+This section is copied from the official Paima templates.
+
+If you're using Mac and run into installation issues you can add `--target=esbuild-darwin-arm64` as a workaround to `npm install`. This installs the correct version of a problematic package. For example:
+
+```
+npm install --save-dev esbuild@latest --target=esbuild-darwin-arm64
+```
+## Demo
 ⚠️ There are a lot of things to grasp at once. To help with this, there is a demo of the deployment process available that uses some shortcuts with a deterministic Ganache setup: [link](https://drive.google.com/drive/folders/1D-xsbKTnuRLLybEywRO6_tYPytfiqDzr?usp=sharing).
 
 ## Step 1 - prepare root dir

@@ -24,7 +24,7 @@ const MIDDLEWARE_ERROR_MESSAGES: ErrorMessageMapping = {
     'Unable to build executor from data returned from server -- executor might not exist',
   // Morze Code game
   [MiddlewareErrorCode.GUESS_CONTAINS_WRONG_DATA]:
-    `Your guess contains symbol that does not relate to encoding`
+    `Your guess contains code(s) that does not relate to encoding`
 };
 
 const errorMessageFxn: ErrorMessageFxn = buildErrorCodeTranslator({
