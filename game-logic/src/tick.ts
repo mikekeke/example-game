@@ -55,8 +55,12 @@ function applyEvents(matchState: MatchState, event: TickEvent): void {
      but doing it this way, round executor will go through each awaitable pair to compare and
      we can play nicer animation in the game UI
   */
+  const p1 = (matchState.codesLeft.length !== 0 && matchState.symbolsLeft.length !== 0)
+  && (matchState.symbolsLeft.length !== 0 && matchState.codesLeft.length !== 0);
+
+  const p2 = matchState.codesLeft.length === 0 
+            && matchState.symbolsLeft.length === 0;
   matchState.isGoodSoFar =
-    (matchState.codesLeft.length !== 0 && matchState.symbolsLeft.length !== 0)
-    && (matchState.symbolsLeft.length !== 0 && matchState.codesLeft.length !== 0)
+    (p1 || p2)
     && event.isCorrect;
 }

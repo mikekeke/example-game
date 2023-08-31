@@ -1,4 +1,4 @@
-# Setup and start he project
+# Setup and start the project
 
 This document describes how to setup the project and run it with Ganache network.
 
